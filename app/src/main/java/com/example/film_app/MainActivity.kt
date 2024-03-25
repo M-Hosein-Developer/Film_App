@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.AppTheme
 import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen
+import com.example.film_app.ui.feature.WatchListScreen
 import com.example.film_app.util.BottomNavItem
 
 class MainActivity : ComponentActivity() {
@@ -75,6 +76,17 @@ fun BottomBar(navController: NavHostController) {
                     }
                 )
 
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { navController.navigate(BottomNavItem.WatchListScreen.rout) },
+                    icon = {
+                        Icon(imageVector = BottomNavItem.WatchListScreen.icon , contentDescription = null)
+                    },
+                    label = {
+                        Text(text = BottomNavItem.WatchListScreen.label)
+                    }
+                )
+
             }
         }
     ) {
@@ -87,6 +99,9 @@ fun BottomBar(navController: NavHostController) {
 
             composable(BottomNavItem.SearchScreen.rout){
                 SearchScreen()
+            }
+            composable(BottomNavItem.WatchListScreen.rout){
+                WatchListScreen()
             }
 
         }
