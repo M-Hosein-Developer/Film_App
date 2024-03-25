@@ -1,2 +1,4 @@
 package com.example.film_app.util
 
+const val BASE_URL = "https://api.themoviedb.org/"
+const val API_KEY = "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNTUwMTAzOTJiZGZhNDBmYTQyNjhhOTdlMWE3NGRhZCIsInN1YiI6IjY1MmFjZmU2MGNiMzM1MTZmZDQ5OGVkMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.w7chPcAiWT4jam8Le2AySWMvnZwE4Jw3VtQQAqLaZvo"
