@@ -1,8 +1,8 @@
-package com.example.movies.model.dataClasses
+package com.example.film_app.model.database.entities
 
-import com.example.movies.utils.NOWPLAYING_TABLE
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.film_app.util.NOWPLAYING_TABLE
 
 @Entity(tableName = NOWPLAYING_TABLE)
 data class NowPlayingEntity(

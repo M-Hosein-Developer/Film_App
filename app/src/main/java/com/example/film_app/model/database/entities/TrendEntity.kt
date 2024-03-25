@@ -1,8 +1,8 @@
-package com.example.movies.model.dataClasses
+package com.example.film_app.model.database.entities
 
-import com.example.movies.utils.TREND
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.film_app.util.TREND
 
 @Entity(tableName = TREND)
 data class TrendEntity(

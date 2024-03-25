@@ -1,8 +1,8 @@
-package com.example.movies.model.dataClasses
+package com.example.film_app.model.database.entities
 
-import com.example.movies.utils.POPULAR_TABLE
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.film_app.util.POPULAR_TABLE
 
 @Entity(tableName = POPULAR_TABLE)
 data class PopularEntity(

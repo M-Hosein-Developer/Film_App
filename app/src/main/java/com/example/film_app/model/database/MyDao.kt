@@ -4,16 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.film_app.model.database.entities.NowPlayingEntity
+import com.example.film_app.model.database.entities.PopularEntity
+import com.example.film_app.model.database.entities.TopRatedEntity
+import com.example.film_app.model.database.entities.TrendEntity
+import com.example.film_app.model.database.entities.UpcomingEntity
 import com.example.film_app.util.NOWPLAYING_TABLE
 import com.example.film_app.util.POPULAR_TABLE
 import com.example.film_app.util.TOP_RATED
 import com.example.film_app.util.TREND
 import com.example.film_app.util.UPCOMING
-import com.example.movies.model.dataClasses.NowPlayingEntity
-import com.example.movies.model.dataClasses.PopularEntity
-import com.example.movies.model.dataClasses.TopRatedEntity
-import com.example.movies.model.dataClasses.TrendEntity
-import com.example.movies.model.dataClasses.UpcomingEntity
 
 @Dao
 interface MyDao {
