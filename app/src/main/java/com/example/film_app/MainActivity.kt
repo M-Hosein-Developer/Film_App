@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -22,8 +23,14 @@ import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen
 import com.example.film_app.ui.feature.WatchListScreen
 import com.example.film_app.util.BottomNavItem
+import com.example.film_app.viewModel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val homeViewModel : HomeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) {
 
-                    BottomBar(navController)
+                    BottomBar(navController , homeViewModel)
 
                 }
             }
@@ -48,7 +55,7 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BottomBar(navController: NavHostController) {
+fun BottomBar(navController: NavHostController, homeViewModel: HomeViewModel) {
 
     Scaffold(
         bottomBar = {
@@ -94,7 +101,7 @@ fun BottomBar(navController: NavHostController) {
         NavHost(navController = navController, startDestination = BottomNavItem.HomeScreen.rout){
 
             composable(BottomNavItem.HomeScreen.rout){
-                HomeScreen()
+                HomeScreen(homeViewModel)
             }
 
             composable(BottomNavItem.SearchScreen.rout){
