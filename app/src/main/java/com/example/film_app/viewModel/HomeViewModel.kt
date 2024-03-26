@@ -7,6 +7,7 @@ import com.example.film_app.model.repository.MainRepository
 import com.example.film_app.ui.intent.MainIntent
 import com.example.film_app.ui.state.NowPlayingState
 import com.example.film_app.ui.state.PopularState
+import com.example.film_app.ui.state.TopRateState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,10 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
     private val _popularState = MutableStateFlow<PopularState>(PopularState.Idle)
     val popularState: StateFlow<PopularState> get() = _popularState
 
+    //Top Rate
+    private val _topRateState = MutableStateFlow<TopRateState>(TopRateState.Idle)
+    val topRateState : StateFlow<TopRateState> get() = _topRateState
+
 
     init {
         handleIntent()
@@ -44,6 +49,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
 
                     is MainIntent.fetchNowPlaying -> getNowPlayingData()
                     is MainIntent.fetchPopular -> getPopularData()
+                    is MainIntent.fetchTopRate -> getTopRateData()
 
                 }
 
@@ -81,7 +87,19 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
 
     }
 
+    //Top Rate
+    private fun getTopRateData() {
 
+        _topRateState.value = TopRateState.Idle
+        viewModelScope.launch {
+            repository.topRate.catch {
+                _topRateState.value = TopRateState.TopRateError(it.localizedMessage)
+            }.collect{
+                _topRateState.value = TopRateState.TopRateData(it)
+            }
+        }
+
+    }
 
 
 }

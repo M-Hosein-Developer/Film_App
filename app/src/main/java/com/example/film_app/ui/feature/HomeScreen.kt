@@ -6,12 +6,13 @@ import androidx.compose.runtime.LaunchedEffect
 import com.example.film_app.ui.intent.MainIntent
 import com.example.film_app.ui.state.NowPlayingState
 import com.example.film_app.ui.state.PopularState
+import com.example.film_app.ui.state.TopRateState
 import com.example.film_app.viewModel.HomeViewModel
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel){
 
-    LaunchedEffect(1) {
+    LaunchedEffect(viewModel.nowPlayingState) {
         viewModel.dataIntent.send(MainIntent.fetchNowPlaying)
 
         viewModel.nowPlayingState.collect{
@@ -29,7 +30,7 @@ fun HomeScreen(viewModel: HomeViewModel){
         }
     }
 
-    LaunchedEffect(2) {
+    LaunchedEffect(viewModel.popularState) {
         viewModel.dataIntent.send(MainIntent.fetchPopular)
 
         viewModel.popularState.collect{
@@ -45,6 +46,26 @@ fun HomeScreen(viewModel: HomeViewModel){
             }
 
         }
+
+    }
+
+    LaunchedEffect(viewModel.topRateState) {
+        viewModel.dataIntent.send(MainIntent.fetchTopRate)
+
+        viewModel.topRateState.collect{
+
+            when (it) {
+                is TopRateState.Idle -> {}
+
+                is TopRateState.Loading -> {}
+
+                is TopRateState.TopRateData -> { Log.v("getData2" ,it.toString()) }
+
+                is TopRateState.TopRateError -> { Log.v("getDataError" ,it.toString()) }
+            }
+
+        }
+
 
     }
 
