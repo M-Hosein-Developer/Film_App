@@ -6,7 +6,7 @@ sealed class PopularState {
 
     data object Idle : PopularState()
     data object Loading : PopularState()
-    data class PopularData(val nowPlying : List<PopularEntity>) : PopularState()
+    data class PopularData(val popular : List<PopularEntity>) : PopularState()
     data class PopularError(val error: String?) : PopularState()
 
 }
