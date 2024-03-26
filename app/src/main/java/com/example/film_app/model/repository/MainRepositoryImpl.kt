@@ -5,9 +5,11 @@ import com.example.film_app.model.database.MyDao
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
+import com.example.film_app.model.database.entities.UpcomingEntity
 import com.example.film_app.util.getAllNowPlay
 import com.example.film_app.util.getAllPopular
 import com.example.film_app.util.getAllTopRate
+import com.example.film_app.util.getAllUpcoming
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -43,6 +45,16 @@ class MainRepositoryImpl @Inject constructor(private val apiService: ApiService 
             val response = apiService.getAllTopRate()
             emit(getAllTopRate(response))
             myDao.insertAllTopRatedData(getAllTopRate(response))
+            delay(20000)
+        }
+    }.flowOn(Dispatchers.IO)
+
+
+    override val upcoming: Flow<List<UpcomingEntity>> = flow<List<UpcomingEntity>> {
+        while (true){
+            val response = apiService.getAllUpcoming()
+            emit(getAllUpcoming(response))
+            myDao.insertUpcomingData(getAllUpcoming(response))
             delay(20000)
         }
     }.flowOn(Dispatchers.IO)

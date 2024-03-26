@@ -5,5 +5,6 @@ sealed class MainIntent {
     data object fetchNowPlaying : MainIntent()
     data object fetchPopular : MainIntent()
     data object fetchTopRate : MainIntent()
+    data object fetchUpcoming : MainIntent()
 
 }

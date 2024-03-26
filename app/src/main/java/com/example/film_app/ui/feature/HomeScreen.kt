@@ -7,6 +7,7 @@ import com.example.film_app.ui.intent.MainIntent
 import com.example.film_app.ui.state.NowPlayingState
 import com.example.film_app.ui.state.PopularState
 import com.example.film_app.ui.state.TopRateState
+import com.example.film_app.ui.state.UpcomingState
 import com.example.film_app.viewModel.HomeViewModel
 
 @Composable
@@ -62,6 +63,26 @@ fun HomeScreen(viewModel: HomeViewModel){
                 is TopRateState.TopRateData -> { Log.v("getData2" ,it.toString()) }
 
                 is TopRateState.TopRateError -> { Log.v("getDataError" ,it.toString()) }
+            }
+
+        }
+
+
+    }
+
+    LaunchedEffect(viewModel.upcomingState) {
+        viewModel.dataIntent.send(MainIntent.fetchUpcoming)
+
+        viewModel.upcomingState.collect{
+
+            when (it) {
+                is UpcomingState.Idle -> {}
+
+                is UpcomingState.Loading -> {}
+
+                is UpcomingState.UpcomingData -> { Log.v("getData2" ,it.toString()) }
+
+                is UpcomingState.UpcomingError -> { Log.v("getDataError" ,it.toString()) }
             }
 
         }

@@ -8,6 +8,7 @@ import com.example.film_app.ui.intent.MainIntent
 import com.example.film_app.ui.state.NowPlayingState
 import com.example.film_app.ui.state.PopularState
 import com.example.film_app.ui.state.TopRateState
+import com.example.film_app.ui.state.UpcomingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +35,9 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
     private val _topRateState = MutableStateFlow<TopRateState>(TopRateState.Idle)
     val topRateState : StateFlow<TopRateState> get() = _topRateState
 
+    //Upcoming
+    private val _upcomingState = MutableStateFlow<UpcomingState>(UpcomingState.Idle)
+    val upcomingState : StateFlow<UpcomingState> get() = _upcomingState
 
     init {
         handleIntent()
@@ -50,6 +54,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
                     is MainIntent.fetchNowPlaying -> getNowPlayingData()
                     is MainIntent.fetchPopular -> getPopularData()
                     is MainIntent.fetchTopRate -> getTopRateData()
+                    is MainIntent.fetchUpcoming -> getUpcomingData()
 
                 }
 
@@ -58,6 +63,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
         }
 
     }
+
 
     //Now Playing
     private fun getNowPlayingData() {
@@ -96,6 +102,20 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
                 _topRateState.value = TopRateState.TopRateError(it.localizedMessage)
             }.collect{
                 _topRateState.value = TopRateState.TopRateData(it)
+            }
+        }
+
+    }
+
+    //Upcoming
+    private fun getUpcomingData() {
+
+        _upcomingState.value = UpcomingState.Loading
+        viewModelScope.launch {
+            repository.upcoming.catch {
+                _upcomingState.value = UpcomingState.UpcomingError(it.localizedMessage)
+            }.collect{
+                _upcomingState.value = UpcomingState.UpcomingData(it)
             }
         }
 
