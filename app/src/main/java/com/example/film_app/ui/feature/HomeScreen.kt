@@ -7,6 +7,7 @@ import com.example.film_app.ui.intent.MainIntent
 import com.example.film_app.ui.state.NowPlayingState
 import com.example.film_app.ui.state.PopularState
 import com.example.film_app.ui.state.TopRateState
+import com.example.film_app.ui.state.TrendState
 import com.example.film_app.ui.state.UpcomingState
 import com.example.film_app.viewModel.HomeViewModel
 
@@ -80,9 +81,29 @@ fun HomeScreen(viewModel: HomeViewModel){
 
                 is UpcomingState.Loading -> {}
 
-                is UpcomingState.UpcomingData -> { Log.v("getData2" ,it.toString()) }
+                is UpcomingState.UpcomingData -> { Log.v("getData3" ,it.toString()) }
 
                 is UpcomingState.UpcomingError -> { Log.v("getDataError" ,it.toString()) }
+            }
+
+        }
+
+
+    }
+
+    LaunchedEffect(viewModel.trendState) {
+        viewModel.dataIntent.send(MainIntent.fetchTrend)
+
+        viewModel.trendState.collect{
+
+            when (it) {
+                is TrendState.Idle -> {}
+
+                is TrendState.Loading -> {}
+
+                is TrendState.TrendData -> { Log.v("getData4" ,it.toString()) }
+
+                is TrendState.TrendError -> { Log.v("getDataError" ,it.toString()) }
             }
 
         }

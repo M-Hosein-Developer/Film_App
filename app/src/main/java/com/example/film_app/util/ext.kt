@@ -4,6 +4,7 @@ import com.example.film_app.model.dataClass.ResponseMovies
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
+import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
 
 fun getAllNowPlay(response : ResponseMovies): List<NowPlayingEntity> {
@@ -94,6 +95,33 @@ fun getAllUpcoming(response : ResponseMovies): List<UpcomingEntity> {
     for (i in 0 until response.results.size) {
         val result = response.results[i]
         val movieEntity = UpcomingEntity(
+            result.adult,
+            result.backdropPath,
+            result.id,
+            result.originalLanguage,
+            result.originalTitle,
+            result.overview,
+            result.popularity,
+            result.posterPath,
+            result.releaseDate,
+            result.title,
+            result.video,
+            result.voteAverage,
+            result.voteCount
+        )
+        data.add(movieEntity)
+    }
+
+    return data
+}
+
+fun getAllTrend(response : ResponseMovies): List<TrendEntity> {
+
+    val data = arrayListOf<TrendEntity>()
+
+    for (i in 0 until response.results.size) {
+        val result = response.results[i]
+        val movieEntity = TrendEntity(
             result.adult,
             result.backdropPath,
             result.id,

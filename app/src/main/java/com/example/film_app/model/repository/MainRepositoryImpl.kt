@@ -5,10 +5,12 @@ import com.example.film_app.model.database.MyDao
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
+import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
 import com.example.film_app.util.getAllNowPlay
 import com.example.film_app.util.getAllPopular
 import com.example.film_app.util.getAllTopRate
+import com.example.film_app.util.getAllTrend
 import com.example.film_app.util.getAllUpcoming
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -49,12 +51,22 @@ class MainRepositoryImpl @Inject constructor(private val apiService: ApiService 
         }
     }.flowOn(Dispatchers.IO)
 
-
+    //Upcoming
     override val upcoming: Flow<List<UpcomingEntity>> = flow<List<UpcomingEntity>> {
         while (true){
             val response = apiService.getAllUpcoming()
             emit(getAllUpcoming(response))
             myDao.insertUpcomingData(getAllUpcoming(response))
+            delay(20000)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    //Trend
+    override val trend: Flow<List<TrendEntity>> = flow<List<TrendEntity>> {
+        while (true){
+            val response = apiService.getAllTrend()
+            emit(getAllTrend(response))
+            myDao.insertTrendData(getAllTrend(response))
             delay(20000)
         }
     }.flowOn(Dispatchers.IO)

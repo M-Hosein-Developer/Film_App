@@ -8,6 +8,7 @@ import com.example.film_app.ui.intent.MainIntent
 import com.example.film_app.ui.state.NowPlayingState
 import com.example.film_app.ui.state.PopularState
 import com.example.film_app.ui.state.TopRateState
+import com.example.film_app.ui.state.TrendState
 import com.example.film_app.ui.state.UpcomingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -39,6 +40,10 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
     private val _upcomingState = MutableStateFlow<UpcomingState>(UpcomingState.Idle)
     val upcomingState : StateFlow<UpcomingState> get() = _upcomingState
 
+    //Trend
+    private val _trendState = MutableStateFlow<TrendState>(TrendState.Idle)
+    val trendState : StateFlow<TrendState> get() = _trendState
+
     init {
         handleIntent()
     }
@@ -55,6 +60,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
                     is MainIntent.fetchPopular -> getPopularData()
                     is MainIntent.fetchTopRate -> getTopRateData()
                     is MainIntent.fetchUpcoming -> getUpcomingData()
+                    is MainIntent.fetchTrend -> getTrendData()
 
                 }
 
@@ -63,6 +69,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
         }
 
     }
+
 
 
     //Now Playing
@@ -116,6 +123,20 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
                 _upcomingState.value = UpcomingState.UpcomingError(it.localizedMessage)
             }.collect{
                 _upcomingState.value = UpcomingState.UpcomingData(it)
+            }
+        }
+
+    }
+
+    //Trend
+    private fun getTrendData() {
+
+        _trendState.value = TrendState.Loading
+        viewModelScope.launch {
+            repository.trend.catch {
+                _trendState.value = TrendState.TrendError(it.localizedMessage)
+            }.collect{
+                _trendState.value = TrendState.TrendData(it)
             }
         }
 

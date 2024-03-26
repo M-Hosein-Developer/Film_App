@@ -3,6 +3,7 @@ package com.example.film_app.model.repository
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
+import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -20,7 +21,8 @@ interface MainRepository {
     //Upcoming
     val upcoming : Flow<List<UpcomingEntity>>
 
-
+    //Trend
+    val trend : Flow<List<TrendEntity>>
 
 
 }
