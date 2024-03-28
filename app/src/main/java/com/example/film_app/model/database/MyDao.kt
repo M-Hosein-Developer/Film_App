@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
@@ -56,5 +57,12 @@ interface MyDao {
 
     @Query("SELECT * FROM  $TREND")
     suspend fun getAllTrendData() : List<TrendEntity>
+
+    //All Data
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllData(moviesList: List<AllDataEntity>)
+
+    @Query("SELECT * FROM  $TREND")
+    suspend fun getAllData() : List<AllDataEntity>
 
 }

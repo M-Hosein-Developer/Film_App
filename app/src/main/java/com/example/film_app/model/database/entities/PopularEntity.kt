@@ -8,7 +8,7 @@ import com.example.film_app.util.POPULAR_TABLE
 data class PopularEntity(
     val adult: Boolean,
     val backdropPath: String,
-  @PrimaryKey(autoGenerate = true)
+  @PrimaryKey(autoGenerate = false)
     val id: Int,
     val originalLanguage: String,
     val originalTitle: String,
