@@ -10,6 +10,7 @@ import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
 import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
+import com.example.film_app.util.ALLDATA_TABLE
 import com.example.film_app.util.NOWPLAYING_TABLE
 import com.example.film_app.util.POPULAR_TABLE
 import com.example.film_app.util.TOP_RATED
@@ -62,7 +63,7 @@ interface MyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllData(moviesList: List<AllDataEntity>)
 
-    @Query("SELECT * FROM  $TREND")
+    @Query("SELECT * FROM  $ALLDATA_TABLE")
     suspend fun getAllData() : List<AllDataEntity>
 
 }

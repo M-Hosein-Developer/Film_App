@@ -41,7 +41,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             emit(getAllPopular(response))
             myDao.insertAllPopularData(getAllPopular(response))
             myDao.insertAllData(getAllData(response))
-            delay(20000)
+            delay(21000)
         }
     }.flowOn(Dispatchers.IO)
 
@@ -52,7 +52,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             emit(getAllTopRate(response))
             myDao.insertAllTopRatedData(getAllTopRate(response))
             myDao.insertAllData(getAllData(response))
-            delay(20000)
+            delay(22000)
         }
     }.flowOn(Dispatchers.IO)
 
@@ -63,7 +63,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             emit(getAllUpcoming(response))
             myDao.insertUpcomingData(getAllUpcoming(response))
             myDao.insertAllData(getAllData(response))
-            delay(20000)
+            delay(23000)
         }
     }.flowOn(Dispatchers.IO)
 
@@ -74,7 +74,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             emit(getAllTrend(response))
             myDao.insertTrendData(getAllTrend(response))
             myDao.insertAllData(getAllData(response))
-            delay(20000)
+            delay(24000)
         }
     }.flowOn(Dispatchers.IO)
 

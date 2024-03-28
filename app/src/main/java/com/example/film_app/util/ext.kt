@@ -169,3 +169,19 @@ fun getAllData(response : ResponseMovies): List<AllDataEntity> {
 
     return data
 }
+
+val EMPTY_DATA = AllDataEntity(
+    false ,
+    "" ,
+    -1 ,
+    "" ,
+    "" ,
+    "" ,
+    0.0 ,
+    "" ,
+    "" ,
+    "" ,
+    false ,
+    0.0 ,
+    -1
+    )

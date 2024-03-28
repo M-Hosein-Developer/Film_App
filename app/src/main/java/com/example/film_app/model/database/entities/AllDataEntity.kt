@@ -11,7 +11,7 @@ data class AllDataEntity(
   @PrimaryKey(autoGenerate = false)
     val id: Int,
     val originalLanguage: String,
-    val originalTitle: String,
+    val originalTitle: String?,
     val overview: String,
     val popularity: Double,
     val posterPath: String,

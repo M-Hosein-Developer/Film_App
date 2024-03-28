@@ -43,7 +43,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setContent {
 
             val navController = rememberNavController()
@@ -53,7 +52,6 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-
                     BottomBar(navController , homeViewModel , detailViewModel)
                 }
             }
@@ -141,7 +139,7 @@ fun BottomBar(
 
             composable(
                 route = BottomNavItem.DetailScreen.rout + "/{DetailNav}",
-                arguments = listOf(navArgument("DetailNav"){NavType.IntType})
+                arguments = listOf(navArgument("DetailNav"){type = NavType.IntType})
                 ){
                 DetailScreen(detailViewModel , navController , it.arguments!!.getInt("DetailNav" , -1))
                 isVisible = false
