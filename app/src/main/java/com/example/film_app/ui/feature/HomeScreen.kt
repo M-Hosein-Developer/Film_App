@@ -167,7 +167,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
         )
 
         Trend(trend.value){
-            navController.navigate(BottomNavItem.DetailScreen.rout)
+            navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it)
         }
 
 

@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import com.example.film_app.viewModel.DetailViewModel
 
 @Composable
-fun DetailScreen(detailViewModel: DetailViewModel, navController: NavHostController) {
+fun DetailScreen(detailViewModel: DetailViewModel, navController: NavHostController, moviesId: Int) {
 
 
     Column(
