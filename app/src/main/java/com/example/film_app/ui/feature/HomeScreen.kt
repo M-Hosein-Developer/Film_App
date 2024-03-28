@@ -1,20 +1,30 @@
 package com.example.film_app.ui.feature
 
 import android.util.Log
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +42,7 @@ import com.example.film_app.ui.state.PopularState
 import com.example.film_app.ui.state.TopRateState
 import com.example.film_app.ui.state.TrendState
 import com.example.film_app.ui.state.UpcomingState
+import com.example.film_app.util.ButtonId
 import com.example.film_app.viewModel.HomeViewModel
 
 @Composable
@@ -154,6 +165,11 @@ fun HomeScreen(viewModel: HomeViewModel){
 
         Trend(trend.value)
 
+
+        SetDataByButtons(nowPlaying.value , popular.value , topRate.value , upcoming.value)
+
+
+
     }
 
 }
@@ -194,3 +210,252 @@ fun TrendItem(trend: TrendEntity) {
     }
 
 }
+
+
+@Composable
+fun SetDataByButtons(
+    nowPlying: List<NowPlayingEntity>,
+    popular: List<PopularEntity>,
+    topRate: List<TopRatedEntity>,
+    upcoming: List<UpcomingEntity>
+) {
+
+    var clickedButton by remember { mutableStateOf<ButtonId?>(null) }
+
+    Column {
+
+        Row(
+            Modifier
+                .padding(horizontal = 24.dp)
+                .padding(top = 12.dp)
+                .horizontalScroll(rememberScrollState())
+                .clip(RoundedCornerShape(12.dp)),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+        ) {
+
+            Button(
+                onClick = { clickedButton = ButtonId.BUTTON_1 },
+                shape = RectangleShape
+            ) {
+                Text(text = "NOW PLAYING")
+            }
+
+            Button(
+                onClick = { clickedButton = ButtonId.BUTTON_2
+                          },
+                shape = RectangleShape
+            ) {
+                Text(text = "POPULAR")
+            }
+
+            Button(
+                onClick = { clickedButton = ButtonId.BUTTON_3 },
+                shape = RectangleShape
+            ) {
+                Text(text = "TOP RATED")
+            }
+
+
+            Button(
+                onClick = { clickedButton = ButtonId.BUTTON_4 },
+                shape = RectangleShape
+            ) {
+                Text(text = "UPCOMING")
+            }
+
+        }
+
+    }
+
+
+    when (clickedButton) {
+        ButtonId.BUTTON_1 -> {
+            FilmCategoryNowPlaying(nowPlying)
+
+        }
+        ButtonId.BUTTON_2 -> {
+            FilmCategoryPopular(popular)
+
+        }
+        ButtonId.BUTTON_3 -> {
+            FilmCategoryTopRate(topRate)
+
+        }
+        ButtonId.BUTTON_4 -> {
+            FilmCategoryUpcoming(upcoming)
+
+        }
+        else -> {
+            FilmCategoryNowPlaying(nowPlying)
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+//Now playing lazy
+@Composable
+fun FilmCategoryNowPlaying(nowPlaying: List<NowPlayingEntity>) {
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
+    ) {
+
+        items(nowPlaying.size) {
+            FilmCategoryNowPlayingItem(nowPlaying[it])
+        }
+
+    }
+
+}
+
+@Composable
+fun FilmCategoryNowPlayingItem(nowPlaying: NowPlayingEntity) {
+
+    Column(
+        modifier = Modifier
+            .padding(end = 12.dp, top = 12.dp)
+            .height(200.dp)
+            .width(125.dp)
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500" + nowPlaying.posterPath,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+    }
+
+}
+
+//Popular lazy
+@Composable
+fun FilmCategoryPopular(popular: List<PopularEntity>) {
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
+    ) {
+
+        items(popular.size) {
+            FilmCategoryPopularItem(popular[it])
+        }
+
+    }
+
+}
+
+@Composable
+fun FilmCategoryPopularItem(popular: PopularEntity) {
+
+    Column(
+        modifier = Modifier
+            .padding(end = 12.dp, top = 12.dp)
+            .height(200.dp)
+            .width(125.dp)
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500" + popular.posterPath,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+    }
+
+}
+
+//Top rate lazy
+@Composable
+fun FilmCategoryTopRate(topRate: List<TopRatedEntity>) {
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
+    ) {
+
+        items(topRate.size) {
+            FilmCategoryPopularItem(topRate[it])
+        }
+
+    }
+
+}
+
+@Composable
+fun FilmCategoryPopularItem(topRate: TopRatedEntity) {
+
+    Column(
+        modifier = Modifier
+            .padding(end = 12.dp, top = 12.dp)
+            .height(200.dp)
+            .width(125.dp)
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500" + topRate.posterPath,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+    }
+
+}
+
+//Upcoming lazy
+@Composable
+fun FilmCategoryUpcoming(upcoming: List<UpcomingEntity>) {
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
+    ) {
+
+        items(upcoming.size) {
+            FilmCategoryPopularItem(upcoming[it])
+        }
+
+    }
+
+}
+
+@Composable
+fun FilmCategoryPopularItem(upcoming: UpcomingEntity) {
+
+    Column(
+        modifier = Modifier
+            .padding(end = 12.dp, top = 12.dp)
+            .height(200.dp)
+            .width(125.dp)
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500" + upcoming.posterPath,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+    }
+
+}
+
