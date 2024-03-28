@@ -1,4 +1,4 @@
-package com.example.film_app.model.repository
+package com.example.film_app.model.repository.homeRepo
 
 import com.example.film_app.model.apiService.ApiService
 import com.example.film_app.model.database.MyDao
@@ -19,7 +19,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class MainRepositoryImpl @Inject constructor(private val apiService: ApiService , private val myDao: MyDao) : MainRepository {
+class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService, private val myDao: MyDao) :
+    HomeRepository {
 
     //Now Playing
     override val nowPlaying: Flow<List<NowPlayingEntity>> = flow {

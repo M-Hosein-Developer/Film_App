@@ -3,7 +3,7 @@ package com.example.film_app.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.film_app.model.repository.MainRepository
+import com.example.film_app.model.repository.homeRepo.HomeRepository
 import com.example.film_app.ui.intent.MainIntent
 import com.example.film_app.ui.state.NowPlayingState
 import com.example.film_app.ui.state.PopularState
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
 
     val dataIntent = Channel<MainIntent>()
 

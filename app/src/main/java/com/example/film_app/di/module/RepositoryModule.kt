@@ -1,7 +1,7 @@
 package com.example.film_app.di.module
 
-import com.example.film_app.model.repository.MainRepository
-import com.example.film_app.model.repository.MainRepositoryImpl
+import com.example.film_app.model.repository.homeRepo.HomeRepository
+import com.example.film_app.model.repository.homeRepo.HomeRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ abstract class RepositoryModule {
 
 
     @Binds
-    abstract fun repository(mainRepository: MainRepositoryImpl) : MainRepository
+    abstract fun repository(mainRepository: HomeRepositoryImpl) : HomeRepository
 
 
 }
