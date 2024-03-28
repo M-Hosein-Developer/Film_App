@@ -6,5 +6,6 @@ sealed class HomeIntent {
     data object fetchPopular : HomeIntent()
     data object fetchTopRate : HomeIntent()
     data object fetchUpcoming : HomeIntent()
+    data object fetchTrend : HomeIntent()
 
 }
