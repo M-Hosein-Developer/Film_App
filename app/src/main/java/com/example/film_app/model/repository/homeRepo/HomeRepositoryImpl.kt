@@ -7,6 +7,7 @@ import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
 import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
+import com.example.film_app.util.getAllData
 import com.example.film_app.util.getAllNowPlay
 import com.example.film_app.util.getAllPopular
 import com.example.film_app.util.getAllTopRate
@@ -28,6 +29,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             val response = apiService.getAllNowPlay()
             emit(getAllNowPlay(response))
             myDao.insertAllNowPlayingData(getAllNowPlay(response))
+            myDao.insertAllData(getAllData(response))
             delay(20000)
         }
     }.flowOn(Dispatchers.IO)
@@ -38,6 +40,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             val response = apiService.getAllPopular()
             emit(getAllPopular(response))
             myDao.insertAllPopularData(getAllPopular(response))
+            myDao.insertAllData(getAllData(response))
             delay(20000)
         }
     }.flowOn(Dispatchers.IO)
@@ -48,6 +51,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             val response = apiService.getAllTopRate()
             emit(getAllTopRate(response))
             myDao.insertAllTopRatedData(getAllTopRate(response))
+            myDao.insertAllData(getAllData(response))
             delay(20000)
         }
     }.flowOn(Dispatchers.IO)
@@ -58,6 +62,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             val response = apiService.getAllUpcoming()
             emit(getAllUpcoming(response))
             myDao.insertUpcomingData(getAllUpcoming(response))
+            myDao.insertAllData(getAllData(response))
             delay(20000)
         }
     }.flowOn(Dispatchers.IO)
@@ -68,6 +73,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             val response = apiService.getAllTrend()
             emit(getAllTrend(response))
             myDao.insertTrendData(getAllTrend(response))
+            myDao.insertAllData(getAllData(response))
             delay(20000)
         }
     }.flowOn(Dispatchers.IO)

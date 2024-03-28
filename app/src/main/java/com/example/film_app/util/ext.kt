@@ -1,6 +1,7 @@
 package com.example.film_app.util
 
 import com.example.film_app.model.dataClass.ResponseMovies
+import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
@@ -122,6 +123,33 @@ fun getAllTrend(response : ResponseMovies): List<TrendEntity> {
     for (i in 0 until response.results.size) {
         val result = response.results[i]
         val movieEntity = TrendEntity(
+            result.adult,
+            result.backdropPath,
+            result.id,
+            result.originalLanguage,
+            result.originalTitle,
+            result.overview,
+            result.popularity,
+            result.posterPath,
+            result.releaseDate,
+            result.title,
+            result.video,
+            result.voteAverage,
+            result.voteCount
+        )
+        data.add(movieEntity)
+    }
+
+    return data
+}
+
+fun getAllData(response : ResponseMovies): List<AllDataEntity> {
+
+    val data = arrayListOf<AllDataEntity>()
+
+    for (i in 0 until response.results.size) {
+        val result = response.results[i]
+        val movieEntity = AllDataEntity(
             result.adult,
             result.backdropPath,
             result.id,
