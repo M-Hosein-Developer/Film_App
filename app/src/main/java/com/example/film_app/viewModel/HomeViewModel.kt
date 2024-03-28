@@ -4,12 +4,12 @@ package com.example.film_app.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.film_app.model.repository.homeRepo.HomeRepository
-import com.example.film_app.ui.intent.MainIntent
-import com.example.film_app.ui.state.NowPlayingState
-import com.example.film_app.ui.state.PopularState
-import com.example.film_app.ui.state.TopRateState
-import com.example.film_app.ui.state.TrendState
-import com.example.film_app.ui.state.UpcomingState
+import com.example.film_app.ui.intent.HomeIntent
+import com.example.film_app.ui.state.homeState.NowPlayingState
+import com.example.film_app.ui.state.homeState.PopularState
+import com.example.film_app.ui.state.homeState.TopRateState
+import com.example.film_app.ui.state.homeState.TrendState
+import com.example.film_app.ui.state.homeState.UpcomingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
 
-    val dataIntent = Channel<MainIntent>()
+    val dataIntent = Channel<HomeIntent>()
 
     //Now Playing
     private val _nowPlayingState = MutableStateFlow<NowPlayingState>(NowPlayingState.Idle)
@@ -56,11 +56,11 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository) 
 
                 when (it) {
 
-                    is MainIntent.fetchNowPlaying -> getNowPlayingData()
-                    is MainIntent.fetchPopular -> getPopularData()
-                    is MainIntent.fetchTopRate -> getTopRateData()
-                    is MainIntent.fetchUpcoming -> getUpcomingData()
-                    is MainIntent.fetchTrend -> getTrendData()
+                    is HomeIntent.fetchNowPlaying -> getNowPlayingData()
+                    is HomeIntent.fetchPopular -> getPopularData()
+                    is HomeIntent.fetchTopRate -> getTopRateData()
+                    is HomeIntent.fetchUpcoming -> getUpcomingData()
+                    is HomeIntent.fetchTrend -> getTrendData()
 
                 }
 

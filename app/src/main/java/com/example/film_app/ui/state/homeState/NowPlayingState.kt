@@ -1,4 +1,4 @@
-package com.example.film_app.ui.state
+package com.example.film_app.ui.state.homeState
 
 import com.example.film_app.model.database.entities.NowPlayingEntity
 

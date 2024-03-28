@@ -36,12 +36,12 @@ import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
 import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
-import com.example.film_app.ui.intent.MainIntent
-import com.example.film_app.ui.state.NowPlayingState
-import com.example.film_app.ui.state.PopularState
-import com.example.film_app.ui.state.TopRateState
-import com.example.film_app.ui.state.TrendState
-import com.example.film_app.ui.state.UpcomingState
+import com.example.film_app.ui.intent.HomeIntent
+import com.example.film_app.ui.state.homeState.NowPlayingState
+import com.example.film_app.ui.state.homeState.PopularState
+import com.example.film_app.ui.state.homeState.TopRateState
+import com.example.film_app.ui.state.homeState.TrendState
+import com.example.film_app.ui.state.homeState.UpcomingState
 import com.example.film_app.util.ButtonId
 import com.example.film_app.viewModel.HomeViewModel
 
@@ -55,7 +55,7 @@ fun HomeScreen(viewModel: HomeViewModel){
     val trend = remember { mutableStateOf(listOf<TrendEntity>()) }
 
     LaunchedEffect(viewModel.nowPlayingState) {
-        viewModel.dataIntent.send(MainIntent.fetchNowPlaying)
+        viewModel.dataIntent.send(HomeIntent.fetchNowPlaying)
 
         viewModel.nowPlayingState.collect{
 
@@ -72,7 +72,7 @@ fun HomeScreen(viewModel: HomeViewModel){
         }
     }
     LaunchedEffect(viewModel.popularState) {
-        viewModel.dataIntent.send(MainIntent.fetchPopular)
+        viewModel.dataIntent.send(HomeIntent.fetchPopular)
 
         viewModel.popularState.collect{
 
@@ -90,7 +90,7 @@ fun HomeScreen(viewModel: HomeViewModel){
 
     }
     LaunchedEffect(viewModel.topRateState) {
-        viewModel.dataIntent.send(MainIntent.fetchTopRate)
+        viewModel.dataIntent.send(HomeIntent.fetchTopRate)
 
         viewModel.topRateState.collect{
 
@@ -109,7 +109,7 @@ fun HomeScreen(viewModel: HomeViewModel){
 
     }
     LaunchedEffect(viewModel.upcomingState) {
-        viewModel.dataIntent.send(MainIntent.fetchUpcoming)
+        viewModel.dataIntent.send(HomeIntent.fetchUpcoming)
 
         viewModel.upcomingState.collect{
 
@@ -128,7 +128,7 @@ fun HomeScreen(viewModel: HomeViewModel){
 
     }
     LaunchedEffect(viewModel.trendState) {
-        viewModel.dataIntent.send(MainIntent.fetchTrend)
+        viewModel.dataIntent.send(HomeIntent.fetchTrend)
 
         viewModel.trendState.collect{
 
