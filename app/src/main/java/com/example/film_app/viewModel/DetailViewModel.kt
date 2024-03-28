@@ -27,9 +27,7 @@ class DetailViewModel @Inject constructor(private val repository: DetailReposito
         handleIntent()
     }
 
-    private fun handleIntent() {
-
-        viewModelScope.launch {
+    private fun handleIntent() = viewModelScope.launch {
 
             dataIntent.consumeAsFlow().collect{
 
@@ -40,8 +38,6 @@ class DetailViewModel @Inject constructor(private val repository: DetailReposito
                 }
 
             }
-
-        }
 
     }
 

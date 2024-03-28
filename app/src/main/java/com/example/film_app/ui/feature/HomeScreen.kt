@@ -1,6 +1,7 @@
 package com.example.film_app.ui.feature
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
@@ -42,11 +44,12 @@ import com.example.film_app.ui.state.homeState.PopularState
 import com.example.film_app.ui.state.homeState.TopRateState
 import com.example.film_app.ui.state.homeState.TrendState
 import com.example.film_app.ui.state.homeState.UpcomingState
+import com.example.film_app.util.BottomNavItem
 import com.example.film_app.util.ButtonId
 import com.example.film_app.viewModel.HomeViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel){
+fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
 
     val nowPlaying = remember { mutableStateOf(listOf<NowPlayingEntity>()) }
     val popular = remember { mutableStateOf(listOf<PopularEntity>()) }
@@ -163,7 +166,9 @@ fun HomeScreen(viewModel: HomeViewModel){
             modifier = Modifier.padding(start = 24.dp , top = 24.dp)
         )
 
-        Trend(trend.value)
+        Trend(trend.value){
+            navController.navigate(BottomNavItem.DetailScreen.rout)
+        }
 
 
         SetDataByButtons(nowPlaying.value , popular.value , topRate.value , upcoming.value)
@@ -175,14 +180,14 @@ fun HomeScreen(viewModel: HomeViewModel){
 }
 
 @Composable
-fun Trend(trendList: List<TrendEntity>) {
+fun Trend(trendList: List<TrendEntity> , onItemTrendClick :(Int) -> Unit) {
 
     LazyRow(
         Modifier.padding(start = 24.dp , end = 24.dp , top = 16.dp)
     ) {
 
         items(trendList.size){
-            TrendItem(trendList[it])
+            TrendItem(trendList[it]){ onItemTrendClick.invoke(it) }
         }
 
     }
@@ -190,7 +195,7 @@ fun Trend(trendList: List<TrendEntity>) {
 }
 
 @Composable
-fun TrendItem(trend: TrendEntity) {
+fun TrendItem(trend: TrendEntity , onItemTrendClick :(Int) -> Unit) {
 
     Column(
         modifier = Modifier
@@ -198,6 +203,7 @@ fun TrendItem(trend: TrendEntity) {
             .height(250.dp)
             .width(165.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onItemTrendClick.invoke(trend.id) }
     ) {
 
         AsyncImage(
@@ -289,16 +295,6 @@ fun SetDataByButtons(
             FilmCategoryNowPlaying(nowPlying)
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 }
 
