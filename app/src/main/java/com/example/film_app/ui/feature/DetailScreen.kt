@@ -132,7 +132,8 @@ fun DetailInfo(detailData: AllDataEntity) {
     ) {
 
         Box(
-            Modifier.height(355.dp)
+            Modifier
+                .height(355.dp)
                 .fillMaxWidth()
         ) {
 
@@ -153,10 +154,27 @@ fun DetailInfo(detailData: AllDataEntity) {
                     .width(110.dp)
                     .height(200.dp)
                     .align(Alignment.BottomStart)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(12.dp))
                     .shadow(8.dp),
                 contentScale = ContentScale.Crop,
             )
+
+
+            Text(
+                text = detailData.title,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(bottom = 50.dp , start = 170.dp , end = 14.dp),
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+
+
+
+
 
         }
 
