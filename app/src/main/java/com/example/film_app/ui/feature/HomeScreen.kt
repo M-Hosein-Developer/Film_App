@@ -171,7 +171,13 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
         }
 
 
-        SetDataByButtons(nowPlaying.value , popular.value , topRate.value , upcoming.value)
+        SetDataByButtons(
+            nowPlaying.value , popular.value , topRate.value , upcoming.value,
+            { navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it) },
+            { navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it) },
+            { navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it) },
+            { navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it) }
+        )
 
 
 
@@ -223,7 +229,11 @@ fun SetDataByButtons(
     nowPlying: List<NowPlayingEntity>,
     popular: List<PopularEntity>,
     topRate: List<TopRatedEntity>,
-    upcoming: List<UpcomingEntity>
+    upcoming: List<UpcomingEntity>,
+    onItemNowPlayingClick :(Int) -> Unit,
+    onItemPopularClick :(Int) -> Unit,
+    onItemTopRateClick :(Int) -> Unit,
+    onItemUpcomingClick :(Int) -> Unit
 ) {
 
     var clickedButton by remember { mutableStateOf<ButtonId?>(null) }
@@ -276,23 +286,23 @@ fun SetDataByButtons(
 
     when (clickedButton) {
         ButtonId.BUTTON_1 -> {
-            FilmCategoryNowPlaying(nowPlying)
+            FilmCategoryNowPlaying(nowPlying){onItemNowPlayingClick.invoke(it)}
 
         }
         ButtonId.BUTTON_2 -> {
-            FilmCategoryPopular(popular)
+            FilmCategoryPopular(popular){onItemPopularClick.invoke(it)}
 
         }
         ButtonId.BUTTON_3 -> {
-            FilmCategoryTopRate(topRate)
+            FilmCategoryTopRate(topRate){onItemTopRateClick.invoke(it)}
 
         }
         ButtonId.BUTTON_4 -> {
-            FilmCategoryUpcoming(upcoming)
+            FilmCategoryUpcoming(upcoming){onItemUpcomingClick.invoke(it)}
 
         }
         else -> {
-            FilmCategoryNowPlaying(nowPlying)
+            FilmCategoryNowPlaying(nowPlying){onItemNowPlayingClick.invoke(it)}
         }
     }
 
@@ -301,7 +311,7 @@ fun SetDataByButtons(
 
 //Now playing lazy
 @Composable
-fun FilmCategoryNowPlaying(nowPlaying: List<NowPlayingEntity>) {
+fun FilmCategoryNowPlaying(nowPlaying: List<NowPlayingEntity> , onItemNowPlayingClick :(Int) -> Unit) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -309,7 +319,7 @@ fun FilmCategoryNowPlaying(nowPlaying: List<NowPlayingEntity>) {
     ) {
 
         items(nowPlaying.size) {
-            FilmCategoryNowPlayingItem(nowPlaying[it])
+            FilmCategoryNowPlayingItem(nowPlaying[it]){ onItemNowPlayingClick.invoke(it) }
         }
 
     }
@@ -317,7 +327,7 @@ fun FilmCategoryNowPlaying(nowPlaying: List<NowPlayingEntity>) {
 }
 
 @Composable
-fun FilmCategoryNowPlayingItem(nowPlaying: NowPlayingEntity) {
+fun FilmCategoryNowPlayingItem(nowPlaying: NowPlayingEntity , onItemNowPlayingClick :(Int) -> Unit) {
 
     Column(
         modifier = Modifier
@@ -325,6 +335,7 @@ fun FilmCategoryNowPlayingItem(nowPlaying: NowPlayingEntity) {
             .height(200.dp)
             .width(125.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onItemNowPlayingClick.invoke(nowPlaying.id) }
     ) {
 
         AsyncImage(
@@ -340,7 +351,7 @@ fun FilmCategoryNowPlayingItem(nowPlaying: NowPlayingEntity) {
 
 //Popular lazy
 @Composable
-fun FilmCategoryPopular(popular: List<PopularEntity>) {
+fun FilmCategoryPopular(popular: List<PopularEntity> , onItemPopularClick :(Int) -> Unit) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -348,7 +359,7 @@ fun FilmCategoryPopular(popular: List<PopularEntity>) {
     ) {
 
         items(popular.size) {
-            FilmCategoryPopularItem(popular[it])
+            FilmCategoryTopRateItem(popular[it]){ onItemPopularClick.invoke(it) }
         }
 
     }
@@ -356,7 +367,7 @@ fun FilmCategoryPopular(popular: List<PopularEntity>) {
 }
 
 @Composable
-fun FilmCategoryPopularItem(popular: PopularEntity) {
+fun FilmCategoryTopRateItem(popular: PopularEntity, onItemPopularClick :(Int) -> Unit) {
 
     Column(
         modifier = Modifier
@@ -364,6 +375,7 @@ fun FilmCategoryPopularItem(popular: PopularEntity) {
             .height(200.dp)
             .width(125.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onItemPopularClick.invoke(popular.id) }
     ) {
 
         AsyncImage(
@@ -379,7 +391,7 @@ fun FilmCategoryPopularItem(popular: PopularEntity) {
 
 //Top rate lazy
 @Composable
-fun FilmCategoryTopRate(topRate: List<TopRatedEntity>) {
+fun FilmCategoryTopRate(topRate: List<TopRatedEntity> , onItemTopRateClick :(Int) -> Unit) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -387,7 +399,7 @@ fun FilmCategoryTopRate(topRate: List<TopRatedEntity>) {
     ) {
 
         items(topRate.size) {
-            FilmCategoryPopularItem(topRate[it])
+            FilmCategoryTopRateItem(topRate[it]){ onItemTopRateClick.invoke(it) }
         }
 
     }
@@ -395,7 +407,7 @@ fun FilmCategoryTopRate(topRate: List<TopRatedEntity>) {
 }
 
 @Composable
-fun FilmCategoryPopularItem(topRate: TopRatedEntity) {
+fun FilmCategoryTopRateItem(topRate: TopRatedEntity , onItemTopRateClick :(Int) -> Unit) {
 
     Column(
         modifier = Modifier
@@ -403,6 +415,7 @@ fun FilmCategoryPopularItem(topRate: TopRatedEntity) {
             .height(200.dp)
             .width(125.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onItemTopRateClick.invoke(topRate.id) }
     ) {
 
         AsyncImage(
@@ -418,7 +431,7 @@ fun FilmCategoryPopularItem(topRate: TopRatedEntity) {
 
 //Upcoming lazy
 @Composable
-fun FilmCategoryUpcoming(upcoming: List<UpcomingEntity>) {
+fun FilmCategoryUpcoming(upcoming: List<UpcomingEntity> , onItemUpcomingClick :(Int) -> Unit) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -426,7 +439,7 @@ fun FilmCategoryUpcoming(upcoming: List<UpcomingEntity>) {
     ) {
 
         items(upcoming.size) {
-            FilmCategoryPopularItem(upcoming[it])
+            FilmCategoryTopRateItem(upcoming[it]){ onItemUpcomingClick.invoke(it) }
         }
 
     }
@@ -434,7 +447,7 @@ fun FilmCategoryUpcoming(upcoming: List<UpcomingEntity>) {
 }
 
 @Composable
-fun FilmCategoryPopularItem(upcoming: UpcomingEntity) {
+fun FilmCategoryTopRateItem(upcoming: UpcomingEntity , onItemUpcomingClick :(Int) -> Unit) {
 
     Column(
         modifier = Modifier
@@ -442,6 +455,7 @@ fun FilmCategoryPopularItem(upcoming: UpcomingEntity) {
             .height(200.dp)
             .width(125.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onItemUpcomingClick.invoke(upcoming.id) }
     ) {
 
         AsyncImage(
