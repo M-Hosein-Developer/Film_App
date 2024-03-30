@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class DetailRepositoryImpl @Inject constructor(private val myDao: MyDao) : DetailRepository {
+class DetailAndWatchListRepositoryImpl @Inject constructor(private val myDao: MyDao) : DetailAndWatchListRepository {
 
     override val allDate: Flow<List<AllDataEntity>> = flow {
         while (true){

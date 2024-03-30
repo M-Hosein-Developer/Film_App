@@ -30,7 +30,7 @@ import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen
 import com.example.film_app.ui.feature.WatchListScreen
 import com.example.film_app.util.BottomNavItem
-import com.example.film_app.viewModel.DetailViewModel
+import com.example.film_app.viewModel.DetailAndWatchListViewModel
 import com.example.film_app.viewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val homeViewModel : HomeViewModel by viewModels()
-    private val detailViewModel : DetailViewModel by viewModels()
+    private val detailAndWatchListViewModel : DetailAndWatchListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BottomBar(navController , homeViewModel , detailViewModel)
+                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel)
                 }
             }
         }
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
 fun BottomBar(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
-    detailViewModel: DetailViewModel
+    detailAndWatchListViewModel: DetailAndWatchListViewModel
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
@@ -141,7 +141,7 @@ fun BottomBar(
                 route = BottomNavItem.DetailScreen.rout + "/{DetailNav}",
                 arguments = listOf(navArgument("DetailNav"){type = NavType.IntType})
                 ){
-                DetailScreen(detailViewModel , navController , it.arguments!!.getInt("DetailNav" , -1))
+                DetailScreen(detailAndWatchListViewModel , navController , it.arguments!!.getInt("DetailNav" , -1))
                 isVisible = false
             }
 

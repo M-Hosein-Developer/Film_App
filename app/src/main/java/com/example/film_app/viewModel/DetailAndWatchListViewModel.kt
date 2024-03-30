@@ -2,8 +2,8 @@ package com.example.film_app.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.film_app.model.repository.detailRepo.DetailRepository
-import com.example.film_app.ui.intent.DetailIntent
+import com.example.film_app.model.repository.detailRepo.DetailAndWatchListRepository
+import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.DetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val repository: DetailRepository) : ViewModel() {
+class DetailAndWatchListViewModel @Inject constructor(private val repository: DetailAndWatchListRepository) : ViewModel() {
 
-    val dataIntent = Channel<DetailIntent>()
+    val dataIntent = Channel<DetailAndWatchListIntent>()
 
     //All Data
     private val _allDataState = MutableStateFlow<DetailState>(DetailState.Idle)
@@ -33,7 +33,7 @@ class DetailViewModel @Inject constructor(private val repository: DetailReposito
 
                 when(it){
 
-                    DetailIntent.fetchAllData -> getAllDataFromDb()
+                    DetailAndWatchListIntent.fetchAllData -> getAllDataFromDb()
 
                 }
 

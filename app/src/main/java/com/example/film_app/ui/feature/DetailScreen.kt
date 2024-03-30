@@ -43,18 +43,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.film_app.model.database.entities.AllDataEntity
-import com.example.film_app.ui.intent.DetailIntent
+import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.DetailState
 import com.example.film_app.util.EMPTY_DATA
-import com.example.film_app.viewModel.DetailViewModel
+import com.example.film_app.viewModel.DetailAndWatchListViewModel
 
 @Composable
-fun DetailScreen(viewModel: DetailViewModel, navController: NavHostController, moviesId: Int) {
+fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostController, moviesId: Int) {
 
     var detailData by remember { mutableStateOf(EMPTY_DATA) }
     
     LaunchedEffect(1) {
-        viewModel.dataIntent.send(DetailIntent.fetchAllData)
+        viewModel.dataIntent.send(DetailAndWatchListIntent.fetchAllData)
 
         viewModel.allDataState.collect{ it ->
 

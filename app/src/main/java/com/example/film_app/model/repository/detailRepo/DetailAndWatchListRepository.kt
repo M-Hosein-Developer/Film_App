@@ -4,7 +4,7 @@ import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.WatchListEntity
 import kotlinx.coroutines.flow.Flow
 
-interface DetailRepository {
+interface DetailAndWatchListRepository {
 
     val allDate : Flow<List<AllDataEntity>>
 
