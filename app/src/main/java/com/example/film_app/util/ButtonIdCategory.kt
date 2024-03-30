@@ -1,6 +1,6 @@
 package com.example.film_app.util
 
-enum class ButtonId {
+enum class ButtonIdCategory {
 
     BUTTON_1,
     BUTTON_2,

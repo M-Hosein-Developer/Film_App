@@ -45,7 +45,7 @@ import com.example.film_app.ui.state.homeState.TopRateState
 import com.example.film_app.ui.state.homeState.TrendState
 import com.example.film_app.ui.state.homeState.UpcomingState
 import com.example.film_app.util.BottomNavItem
-import com.example.film_app.util.ButtonId
+import com.example.film_app.util.ButtonIdCategory
 import com.example.film_app.viewModel.HomeViewModel
 
 @Composable
@@ -236,7 +236,7 @@ fun SetDataByButtons(
     onItemUpcomingClick :(Int) -> Unit
 ) {
 
-    var clickedButton by remember { mutableStateOf<ButtonId?>(null) }
+    var clickedButton by remember { mutableStateOf<ButtonIdCategory?>(null) }
 
     Column {
 
@@ -250,22 +250,21 @@ fun SetDataByButtons(
         ) {
 
             Button(
-                onClick = { clickedButton = ButtonId.BUTTON_1 },
+                onClick = { clickedButton = ButtonIdCategory.BUTTON_1 },
                 shape = RectangleShape
             ) {
                 Text(text = "NOW PLAYING")
             }
 
             Button(
-                onClick = { clickedButton = ButtonId.BUTTON_2
-                          },
+                onClick = { clickedButton = ButtonIdCategory.BUTTON_2 },
                 shape = RectangleShape
             ) {
                 Text(text = "POPULAR")
             }
 
             Button(
-                onClick = { clickedButton = ButtonId.BUTTON_3 },
+                onClick = { clickedButton = ButtonIdCategory.BUTTON_3 },
                 shape = RectangleShape
             ) {
                 Text(text = "TOP RATED")
@@ -273,7 +272,7 @@ fun SetDataByButtons(
 
 
             Button(
-                onClick = { clickedButton = ButtonId.BUTTON_4 },
+                onClick = { clickedButton = ButtonIdCategory.BUTTON_4 },
                 shape = RectangleShape
             ) {
                 Text(text = "UPCOMING")
@@ -285,19 +284,19 @@ fun SetDataByButtons(
 
 
     when (clickedButton) {
-        ButtonId.BUTTON_1 -> {
+        ButtonIdCategory.BUTTON_1 -> {
             FilmCategoryNowPlaying(nowPlying){onItemNowPlayingClick.invoke(it)}
 
         }
-        ButtonId.BUTTON_2 -> {
+        ButtonIdCategory.BUTTON_2 -> {
             FilmCategoryPopular(popular){onItemPopularClick.invoke(it)}
 
         }
-        ButtonId.BUTTON_3 -> {
+        ButtonIdCategory.BUTTON_3 -> {
             FilmCategoryTopRate(topRate){onItemTopRateClick.invoke(it)}
 
         }
-        ButtonId.BUTTON_4 -> {
+        ButtonIdCategory.BUTTON_4 -> {
             FilmCategoryUpcoming(upcoming){onItemUpcomingClick.invoke(it)}
 
         }

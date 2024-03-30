@@ -83,8 +83,6 @@ fun DetailScreen(viewModel: DetailViewModel, navController: NavHostController, m
         }
 
     }
-    
-    
 
     Column(
         Modifier.fillMaxSize(),
@@ -140,8 +138,9 @@ fun DetailInfo(detailData: AllDataEntity) {
 
         CoverDetail(detailData)
 
-        DescriptionDetail(detailData)
+        DescriptionFilm(detailData)
 
+        AboutFilm(detailData)
     }
 
 }
@@ -194,7 +193,7 @@ fun CoverDetail(detailData: AllDataEntity) {
 }
 
 @Composable
-fun DescriptionDetail(detailData: AllDataEntity) {
+fun DescriptionFilm(detailData: AllDataEntity) {
 
     Row (
         Modifier
@@ -207,7 +206,9 @@ fun DescriptionDetail(detailData: AllDataEntity) {
 
 
         Row(
-            Modifier.padding(vertical = 16.dp)
+            Modifier.padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
             Icon(
@@ -216,7 +217,12 @@ fun DescriptionDetail(detailData: AllDataEntity) {
                 Modifier.padding(end = 6.dp)
             )
 
-            Text(text = detailData.releaseDate)
+            Text(
+                text = detailData.releaseDate,
+                style = TextStyle(
+                    fontSize = 12.sp
+                )
+            )
         }
 
         Divider(
@@ -227,7 +233,9 @@ fun DescriptionDetail(detailData: AllDataEntity) {
         )
 
         Row(
-            Modifier.padding(vertical = 16.dp)
+            Modifier.padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
             Icon(
@@ -236,7 +244,12 @@ fun DescriptionDetail(detailData: AllDataEntity) {
                 Modifier.padding(end = 6.dp)
             )
 
-            Text(text = detailData.voteAverage.toString())
+            Text(
+                text = detailData.voteAverage.toString(),
+                style = TextStyle(
+                    fontSize = 12.sp
+                )
+            )
         }
 
         Divider(
@@ -247,7 +260,9 @@ fun DescriptionDetail(detailData: AllDataEntity) {
         )
 
         Row(
-            Modifier.padding(vertical = 16.dp)
+            Modifier.padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
             Icon(
@@ -256,10 +271,46 @@ fun DescriptionDetail(detailData: AllDataEntity) {
                 Modifier.padding(end = 6.dp)
             )
 
-            Text(text = detailData.voteCount.toString())
+            Text(
+                text = detailData.voteCount.toString(),
+                style = TextStyle(
+                    fontSize = 12.sp
+                )
+            )
         }
 
     }
+
+}
+
+@Composable
+fun AboutFilm(detailData: AllDataEntity) {
+
+
+    Column(
+        Modifier
+            .padding(horizontal = 40.dp)
+            .padding(top = 12.dp)
+    ) {
+
+        Text(
+            text = "OVERVIEW",
+            Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp),
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
+        )
+
+        Text(
+            text = detailData.overview,
+            Modifier.fillMaxWidth()
+        )
+
+    }
+
 
 }
 
