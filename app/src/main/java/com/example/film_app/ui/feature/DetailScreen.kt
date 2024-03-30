@@ -1,8 +1,11 @@
 package com.example.film_app.ui.feature
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -131,55 +138,131 @@ fun DetailInfo(detailData: AllDataEntity) {
         Modifier.fillMaxSize()
     ) {
 
-        Box(
-            Modifier
-                .height(355.dp)
-                .fillMaxWidth()
-        ) {
+        CoverDetail(detailData)
 
-            AsyncImage(
-                model = "https://image.tmdb.org/t/p/w500" + detailData.backdropPath,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(260.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            AsyncImage(
-                model = "https://image.tmdb.org/t/p/w500" + detailData.posterPath,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(start = 40.dp)
-                    .width(110.dp)
-                    .height(200.dp)
-                    .align(Alignment.BottomStart)
-                    .clip(RoundedCornerShape(12.dp))
-                    .shadow(8.dp),
-                contentScale = ContentScale.Crop,
-            )
-
-
-            Text(
-                text = detailData.title,
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(bottom = 50.dp , start = 170.dp , end = 14.dp),
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-
-
-
-
-
-
-        }
-
-
+        DescriptionDetail(detailData)
 
     }
 
 }
+
+@Composable
+fun CoverDetail(detailData: AllDataEntity) {
+
+    Box(
+        Modifier
+            .height(355.dp)
+            .fillMaxWidth()
+    ) {
+
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500" + detailData.backdropPath,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(260.dp),
+            contentScale = ContentScale.Crop
+        )
+
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500" + detailData.posterPath,
+            contentDescription = null,
+            modifier = Modifier
+                .padding(start = 40.dp)
+                .width(110.dp)
+                .height(200.dp)
+                .align(Alignment.BottomStart)
+                .clip(RoundedCornerShape(12.dp))
+                .shadow(8.dp),
+            contentScale = ContentScale.Crop,
+        )
+
+
+        Text(
+            text = detailData.title,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(bottom = 50.dp, start = 170.dp, end = 14.dp),
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
+
+    }
+
+}
+
+@Composable
+fun DescriptionDetail(detailData: AllDataEntity) {
+
+    Row (
+        Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+            .padding(top = 18.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+
+
+        Row(
+            Modifier.padding(vertical = 16.dp)
+        ) {
+
+            Icon(
+                imageVector = Icons.Default.DateRange,
+                contentDescription = null,
+                Modifier.padding(end = 6.dp)
+            )
+
+            Text(text = detailData.releaseDate)
+        }
+
+        Divider(
+            modifier = Modifier
+                .fillMaxHeight()  //fill the max height
+                .width(1.dp)
+                .padding(vertical = 24.dp)
+        )
+
+        Row(
+            Modifier.padding(vertical = 16.dp)
+        ) {
+
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = null,
+                Modifier.padding(end = 6.dp)
+            )
+
+            Text(text = detailData.voteAverage.toString())
+        }
+
+        Divider(
+            modifier = Modifier
+                .fillMaxHeight()  //fill the max height
+                .width(1.dp)
+                .padding(vertical = 24.dp)
+        )
+
+        Row(
+            Modifier.padding(vertical = 16.dp)
+        ) {
+
+            Icon(
+                imageVector = Icons.Default.ThumbUp,
+                contentDescription = null,
+                Modifier.padding(end = 6.dp)
+            )
+
+            Text(text = detailData.voteCount.toString())
+        }
+
+    }
+
+}
+
+
+
+
