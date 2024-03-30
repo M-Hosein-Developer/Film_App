@@ -70,7 +70,7 @@ interface MyDao {
 
     //Watch List
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWatchList(moviesList: List<WatchListEntity>)
+    suspend fun insertWatchList(moviesList: WatchListEntity)
 
     @Query("SELECT * FROM  $WATCHLIST")
     suspend fun getAllWatchList() : List<WatchListEntity>
