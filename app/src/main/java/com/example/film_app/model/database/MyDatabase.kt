@@ -8,8 +8,9 @@ import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
 import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
+import com.example.film_app.model.database.entities.WatchListEntity
 
-@Database(entities = [NowPlayingEntity::class , PopularEntity::class , TopRatedEntity::class , UpcomingEntity::class , TrendEntity::class , AllDataEntity::class] , version = 1 , exportSchema = false)
+@Database(entities = [NowPlayingEntity::class , PopularEntity::class , TopRatedEntity::class , UpcomingEntity::class , TrendEntity::class , AllDataEntity::class , WatchListEntity::class] , version = 1 , exportSchema = false)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract fun myDao() : MyDao

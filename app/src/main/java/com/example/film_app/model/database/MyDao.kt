@@ -10,12 +10,14 @@ import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
 import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
+import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.util.ALLDATA_TABLE
 import com.example.film_app.util.NOWPLAYING_TABLE
 import com.example.film_app.util.POPULAR_TABLE
 import com.example.film_app.util.TOP_RATED
 import com.example.film_app.util.TREND
 import com.example.film_app.util.UPCOMING
+import com.example.film_app.util.WATCHLIST
 
 @Dao
 interface MyDao {
@@ -65,5 +67,12 @@ interface MyDao {
 
     @Query("SELECT * FROM  $ALLDATA_TABLE")
     suspend fun getAllData() : List<AllDataEntity>
+
+    //Watch List
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWatchList(moviesList: List<WatchListEntity>)
+
+    @Query("SELECT * FROM  $WATCHLIST")
+    suspend fun getAllWatchList() : List<WatchListEntity>
 
 }
