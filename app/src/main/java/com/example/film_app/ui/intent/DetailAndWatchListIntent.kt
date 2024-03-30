@@ -5,5 +5,6 @@ import com.example.film_app.model.database.entities.WatchListEntity
 sealed class DetailAndWatchListIntent {
 
     data object fetchAllData : DetailAndWatchListIntent()
+    data class fetchWatchListId(val id : WatchListEntity) : DetailAndWatchListIntent()
 
 }
