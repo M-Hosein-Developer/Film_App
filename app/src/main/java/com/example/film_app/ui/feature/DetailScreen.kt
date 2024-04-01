@@ -47,6 +47,7 @@ import coil.compose.AsyncImage
 import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
+import com.example.film_app.ui.state.detailState.DeleteFromWatchListState
 import com.example.film_app.ui.state.detailState.DetailState
 import com.example.film_app.ui.state.detailState.WatchListState
 import com.example.film_app.util.EMPTY_DATA
@@ -58,9 +59,10 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
     var detailData by remember { mutableStateOf(EMPTY_DATA) }
     var watchListData by remember { mutableStateOf(listOf(WatchListEntity(-1))) }
     var addFilmId by remember { mutableIntStateOf(-1) }
+    var removeFilmId by remember { mutableIntStateOf(-1) }
 
     LaunchedEffect(1) {
-        viewModel.dataIntent.send(DetailAndWatchListIntent.fetchAllData)
+        viewModel.dataIntent.send(DetailAndWatchListIntent.FetchAllData)
 
         viewModel.allDataState.collect{ it ->
 
@@ -92,7 +94,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     LaunchedEffect(addFilmId) {
         viewModel.dataIntent.send(
-            DetailAndWatchListIntent.fetchWatchListId(WatchListEntity(addFilmId))
+            DetailAndWatchListIntent.FetchWatchListId(WatchListEntity(addFilmId))
         )
 
         viewModel.watchListState.collect{
@@ -104,11 +106,25 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
                 is WatchListState.WatchListError -> {}
 
             }
-
-
         }
     }
 
+    LaunchedEffect(removeFilmId) {
+        viewModel.dataIntent.send(
+            DetailAndWatchListIntent.DeleteWatchListId(WatchListEntity(removeFilmId))
+        )
+
+        viewModel.deleteFilmFromWatchList.collect {
+            when (it) {
+
+                is DeleteFromWatchListState.Idle -> {}
+                is DeleteFromWatchListState.Loading -> {}
+                is DeleteFromWatchListState.DeleteWatchListError -> {}
+
+            }
+        }
+
+    }
 
     Column(
         Modifier.fillMaxSize(),
@@ -125,7 +141,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
             },
 
             onDeleteFavoriteClicked = {
-
+                removeFilmId = it
             }
         )
 
@@ -146,6 +162,9 @@ fun DetailToolbar(
 ) {
 
     val favoriteBtn = remember { mutableStateOf(false) }
+    var favoriteBtnDb = false
+
+
 
     TopAppBar(
         title = { Text(
@@ -167,24 +186,23 @@ fun DetailToolbar(
 
                 favoriteBtn.value = !favoriteBtn.value
 
-                if (favoriteBtn.value)
+                if (favoriteBtn.value) {
                     onAddFavoriteClicked.invoke(detailData.id)
-                else
+                }else {
                     onDeleteFavoriteClicked.invoke(detailData.id)
+                }
 
             }) {
 
                 watchListData.forEach {
-                    if (detailData.id == it.moviesId)
-                        Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
-                    else  if (favoriteBtn.value)
-                        Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
-                    else
-                        Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
-
+                    if (detailData.id == it.moviesId) {
+                        favoriteBtnDb = true
+                    }
                 }
 
                 if (favoriteBtn.value)
+                    Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+                else if (favoriteBtnDb)
                     Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
                 else
                     Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)

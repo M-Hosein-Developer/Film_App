@@ -1,5 +1,6 @@
 package com.example.film_app.ui.feature
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,10 +19,9 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel) {
 
 
     LaunchedEffect(1) {
-        viewModel.dataIntent.send(DetailAndWatchListIntent.fetchWatchListId(WatchListEntity(-1)))
+        viewModel.dataIntent.send(DetailAndWatchListIntent.FetchWatchListId(WatchListEntity(-1)))
 
         viewModel.watchListState.collect{
-
             when(it){
 
                 is WatchListState.Idle -> {}
@@ -31,8 +31,12 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel) {
 
             }
 
+
         }
 
     }
+
+
+    Log.v("watchListData" , watchListData.toString())
 
 }
