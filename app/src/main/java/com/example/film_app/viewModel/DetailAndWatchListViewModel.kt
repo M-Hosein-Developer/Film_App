@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.model.repository.detailRepo.DetailAndWatchListRepository
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
+import com.example.film_app.ui.state.detailState.DeleteFromWatchListState
 import com.example.film_app.ui.state.detailState.DetailState
 import com.example.film_app.ui.state.detailState.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +30,9 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
     private val _watchListState = MutableStateFlow<WatchListState>(WatchListState.Idle)
     val watchListState : StateFlow<WatchListState> get() = _watchListState
 
+    private val _deleteFilmFromWatchList = MutableStateFlow<DeleteFromWatchListState>(DeleteFromWatchListState.Idle)
+    val deleteFilmFromWatchList : StateFlow<DeleteFromWatchListState> get() = _deleteFilmFromWatchList
+
 
     init {
         handleIntent()
@@ -40,8 +44,9 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
 
                 when(it){
 
-                    is DetailAndWatchListIntent.fetchAllData -> getAllDataFromDb()
-                    is DetailAndWatchListIntent.fetchWatchListId -> getAllWatchList(it.id)
+                    is DetailAndWatchListIntent.FetchAllData -> getAllDataFromDb()
+                    is DetailAndWatchListIntent.FetchWatchListId -> getAllWatchList(it.id)
+                    is DetailAndWatchListIntent.DeleteWatchListId -> deleteFavoriteFilmFromWatchList(it.id)
 
                 }
 
@@ -80,6 +85,24 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
             }.collect{
                 _watchListState.value = WatchListState.WatchList(it)
             }
+        }
+
+    }
+
+    private fun deleteFavoriteFilmFromWatchList(id: WatchListEntity) {
+
+        _deleteFilmFromWatchList.value = DeleteFromWatchListState.Loading
+
+        viewModelScope.launch{
+
+            try {
+                if (id.moviesId != -1){
+                    repository.deleteWatchListById(id)
+                }
+            }catch (e : Exception) {
+                _deleteFilmFromWatchList.value = DeleteFromWatchListState.DeleteWatchListError(e.localizedMessage)
+            }
+
         }
 
     }
