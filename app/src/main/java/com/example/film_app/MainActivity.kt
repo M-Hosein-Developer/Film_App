@@ -133,7 +133,7 @@ fun BottomBar(
                 isVisible = true
             }
             composable(BottomNavItem.WatchListScreen.rout){
-                WatchListScreen()
+                WatchListScreen(detailAndWatchListViewModel)
                 isVisible = true
             }
 

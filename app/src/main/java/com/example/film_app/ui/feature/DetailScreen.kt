@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Star
@@ -27,6 +28,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.film_app.model.database.entities.AllDataEntity
+import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.DetailState
 import com.example.film_app.util.EMPTY_DATA
@@ -52,7 +55,8 @@ import com.example.film_app.viewModel.DetailAndWatchListViewModel
 fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostController, moviesId: Int) {
 
     var detailData by remember { mutableStateOf(EMPTY_DATA) }
-    
+    var addFilmId by remember { mutableIntStateOf(-1) }
+
     LaunchedEffect(1) {
         viewModel.dataIntent.send(DetailAndWatchListIntent.fetchAllData)
 
@@ -84,14 +88,29 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     }
 
+    LaunchedEffect(addFilmId) {
+        viewModel.dataIntent.send(
+            DetailAndWatchListIntent.fetchWatchListId(WatchListEntity(addFilmId))
+        )
+    }
+
+
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         DetailToolbar(
-            { navController.popBackStack() },
-            { }
+            detailData = detailData,
+            onBackCLicked = { navController.popBackStack() },
+
+            onAddFavoriteClicked = {
+                addFilmId = it
+            },
+
+            onDeleteFavoriteClicked = {
+
+            }
         )
 
         DetailInfo(detailData)
@@ -102,7 +121,14 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailToolbar(onBackCLicked: () -> Unit, onFavoriteClicked: () -> Unit) {
+fun DetailToolbar(
+    detailData: AllDataEntity,
+    onBackCLicked: () -> Unit,
+    onAddFavoriteClicked: (Int) -> Unit,
+    onDeleteFavoriteClicked: (Int) -> Unit
+) {
+
+    val favoriteBtn = remember { mutableStateOf(false) }
 
     TopAppBar(
         title = { Text(
@@ -120,8 +146,22 @@ fun DetailToolbar(onBackCLicked: () -> Unit, onFavoriteClicked: () -> Unit) {
             }
         },
         actions = {
-            IconButton(onClick = { onFavoriteClicked.invoke() }) {
-                Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
+            IconButton(onClick = {
+
+                favoriteBtn.value = !favoriteBtn.value
+
+                if (favoriteBtn.value)
+                    onAddFavoriteClicked.invoke(detailData.id)
+                else
+                    onDeleteFavoriteClicked.invoke(detailData.id)
+
+            }) {
+
+                if (favoriteBtn.value)
+                    Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+                else
+                    Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
+
             }
         },
         modifier = Modifier.fillMaxWidth()

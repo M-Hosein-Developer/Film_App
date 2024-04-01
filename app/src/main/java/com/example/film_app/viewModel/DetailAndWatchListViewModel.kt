@@ -67,18 +67,20 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
     private fun getAllWatchList(id: WatchListEntity) {
 
         _watchListState.value = WatchListState.Loading
+
+        if (id.moviesId != -1) {
+            viewModelScope.launch {
+                repository.insertWatchList(id)
+            }
+        }
+
         viewModelScope.launch {
-
-            repository.insertWatchList(id)
-
             repository.watchList.catch {
                 _watchListState.value = WatchListState.WatchListError(it.localizedMessage)
             }.collect{
                 _watchListState.value = WatchListState.WatchList(it)
             }
-
         }
-
 
     }
 
