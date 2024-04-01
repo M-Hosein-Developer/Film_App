@@ -75,4 +75,7 @@ interface MyDao {
     @Query("SELECT * FROM  $WATCHLIST")
     suspend fun getAllWatchList() : List<WatchListEntity>
 
+    @Query("DELETE FROM $WATCHLIST WHERE moviesId = :id")
+    suspend fun deleteWatchListBtId( id : Int)
+
 }
