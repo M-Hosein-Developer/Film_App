@@ -48,6 +48,7 @@ import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.DetailState
+import com.example.film_app.ui.state.detailState.WatchListState
 import com.example.film_app.util.EMPTY_DATA
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 
@@ -55,6 +56,7 @@ import com.example.film_app.viewModel.DetailAndWatchListViewModel
 fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostController, moviesId: Int) {
 
     var detailData by remember { mutableStateOf(EMPTY_DATA) }
+    var watchListData by remember { mutableStateOf(listOf(WatchListEntity(-1))) }
     var addFilmId by remember { mutableIntStateOf(-1) }
 
     LaunchedEffect(1) {
@@ -92,6 +94,19 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
         viewModel.dataIntent.send(
             DetailAndWatchListIntent.fetchWatchListId(WatchListEntity(addFilmId))
         )
+
+        viewModel.watchListState.collect{
+            when(it){
+
+                is WatchListState.Idle -> {}
+                is WatchListState.Loading -> {}
+                is WatchListState.WatchList -> { watchListData = it.watchList }
+                is WatchListState.WatchListError -> {}
+
+            }
+
+
+        }
     }
 
 
@@ -102,6 +117,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
         DetailToolbar(
             detailData = detailData,
+            watchListData = watchListData,
             onBackCLicked = { navController.popBackStack() },
 
             onAddFavoriteClicked = {
@@ -123,6 +139,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 @Composable
 fun DetailToolbar(
     detailData: AllDataEntity,
+    watchListData : List<WatchListEntity>,
     onBackCLicked: () -> Unit,
     onAddFavoriteClicked: (Int) -> Unit,
     onDeleteFavoriteClicked: (Int) -> Unit
@@ -156,6 +173,16 @@ fun DetailToolbar(
                     onDeleteFavoriteClicked.invoke(detailData.id)
 
             }) {
+
+                watchListData.forEach {
+                    if (detailData.id == it.moviesId)
+                        Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+                    else  if (favoriteBtn.value)
+                        Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+                    else
+                        Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
+
+                }
 
                 if (favoriteBtn.value)
                     Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
