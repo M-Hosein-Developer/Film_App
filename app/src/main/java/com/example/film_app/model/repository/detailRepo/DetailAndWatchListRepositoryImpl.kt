@@ -19,16 +19,20 @@ class DetailAndWatchListRepositoryImpl @Inject constructor(private val myDao: My
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun insertWatchList(id: WatchListEntity) {
-        myDao.insertWatchList(id)
-    }
-
-
     override val watchList: Flow<List<WatchListEntity>> = flow {
         while (true){
             emit(myDao.getAllWatchList())
             delay(10000)
         }
+    }
+
+
+    override suspend fun insertWatchList(id: WatchListEntity) {
+        myDao.insertWatchList(id)
+    }
+
+    override suspend fun deleteWatchListById(id: WatchListEntity) {
+        myDao.deleteWatchListBtId(id.moviesId)
     }
 
 
