@@ -57,6 +57,7 @@ import com.example.film_app.viewModel.DetailAndWatchListViewModel
 fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostController, moviesId: Int) {
 
     var detailData by remember { mutableStateOf(EMPTY_DATA) }
+
     var watchListData by remember { mutableStateOf(listOf(WatchListEntity(-1))) }
     var addFilmId by remember { mutableIntStateOf(-1) }
     var removeFilmId by remember { mutableIntStateOf(-1) }
@@ -398,7 +399,3 @@ fun AboutFilm(detailData: AllDataEntity) {
 
 
 }
-
-
-
-
