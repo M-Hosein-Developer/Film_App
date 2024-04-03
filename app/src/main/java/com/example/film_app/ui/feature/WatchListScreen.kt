@@ -1,8 +1,14 @@
 package com.example.film_app.ui.feature
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,28 +27,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.WatchListState
+import com.example.film_app.util.EMPTY_DATA1
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 
 @Composable
 fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostController) {
 
-    var watchListData by remember { mutableStateOf(listOf(WatchListEntity(-1))) }
+    var watchListData by remember { mutableStateOf(listOf(EMPTY_DATA1)) }
 
-
-    LaunchedEffect(1) {
-        viewModel.dataIntent.send(DetailAndWatchListIntent.FetchWatchListId(WatchListEntity(-1)))
+    LaunchedEffect(watchListData) {
+        viewModel.dataIntent.send(DetailAndWatchListIntent.FetchWatchListId(EMPTY_DATA1))
 
         viewModel.watchListState.collect{
             when(it){
 
                 is WatchListState.Idle -> {}
                 is WatchListState.Loading -> {}
-                is WatchListState.WatchList -> { watchListData = it.watchList }
+                is WatchListState.WatchList -> {
+                    watchListData = it.watchList
+                    Log.v("testData1" , it.watchList.toString())
+
+                }
                 is WatchListState.WatchListError -> {}
 
             }
@@ -51,6 +63,8 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
         }
 
     }
+
+
 
     Column(
         Modifier.fillMaxSize(),
@@ -61,7 +75,9 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
             navController.popBackStack()
         }
 
+        Log.v("testData" , watchListData.toString())
 
+        WatchListLazy(watchListData)
 
     }
 
@@ -69,9 +85,7 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchListToolbar(
-    onBackCLicked: () -> Unit,
-) {
+fun WatchListToolbar(onBackCLicked: () -> Unit) {
 
     TopAppBar(
         title = { Text(
@@ -90,5 +104,48 @@ fun WatchListToolbar(
         },
         modifier = Modifier.fillMaxWidth()
     )
+
+}
+
+@Composable
+fun WatchListLazy(watchList: List<WatchListEntity>) {
+
+    LazyColumn(
+        Modifier.padding(horizontal = 40.dp)
+    ) {
+
+        items(watchList.size) {
+            WatchListLazyItem(watchList[it])
+        }
+
+    }
+
+}
+
+@Composable
+fun WatchListLazyItem(watchList: WatchListEntity) {
+
+
+    Row {
+
+
+        AsyncImage(
+            model = "https://image.tmdb.org/t/p/w500" + watchList.posterPath,
+            contentDescription = null,
+            modifier = Modifier
+                .width(95.dp)
+                .height(120.dp)
+        )
+
+
+        Column {
+            
+            Text(text = watchList.title)
+
+
+        }
+
+
+    }
 
 }

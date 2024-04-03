@@ -10,8 +10,8 @@ interface DetailAndWatchListRepository {
 
     val watchList : Flow<List<WatchListEntity>>
 
-    suspend fun insertWatchList(id : WatchListEntity)
+    suspend fun insertWatchList(watchList : WatchListEntity)
 
-    suspend fun deleteWatchListById(id : WatchListEntity)
+    suspend fun deleteWatchListById(id : Int)
 
 }

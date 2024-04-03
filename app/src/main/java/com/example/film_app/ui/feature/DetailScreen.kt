@@ -51,6 +51,7 @@ import com.example.film_app.ui.state.detailState.DeleteFromWatchListState
 import com.example.film_app.ui.state.detailState.DetailState
 import com.example.film_app.ui.state.detailState.WatchListState
 import com.example.film_app.util.EMPTY_DATA
+import com.example.film_app.util.EMPTY_DATA1
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 
 @Composable
@@ -58,8 +59,8 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     var detailData by remember { mutableStateOf(EMPTY_DATA) }
 
-    var watchListData by remember { mutableStateOf(listOf(WatchListEntity(-1))) }
-    var addFilmId by remember { mutableIntStateOf(-1) }
+    var watchListData by remember { mutableStateOf(listOf(EMPTY_DATA1)) }
+    var addFilmId by remember { mutableStateOf(EMPTY_DATA1) }
     var removeFilmId by remember { mutableIntStateOf(-1) }
 
     LaunchedEffect(1) {
@@ -95,7 +96,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     LaunchedEffect(addFilmId) {
         viewModel.dataIntent.send(
-            DetailAndWatchListIntent.FetchWatchListId(WatchListEntity(addFilmId))
+            DetailAndWatchListIntent.FetchWatchListId(addFilmId)
         )
 
         viewModel.watchListState.collect{
@@ -112,7 +113,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     LaunchedEffect(removeFilmId) {
         viewModel.dataIntent.send(
-            DetailAndWatchListIntent.DeleteWatchListId(WatchListEntity(removeFilmId))
+            DetailAndWatchListIntent.DeleteWatchListId(EMPTY_DATA1)
         )
 
         viewModel.deleteFilmFromWatchList.collect {
@@ -158,14 +159,12 @@ fun DetailToolbar(
     detailData: AllDataEntity,
     watchListData : List<WatchListEntity>,
     onBackCLicked: () -> Unit,
-    onAddFavoriteClicked: (Int) -> Unit,
+    onAddFavoriteClicked: (WatchListEntity) -> Unit,
     onDeleteFavoriteClicked: (Int) -> Unit
 ) {
 
     val favoriteBtn = remember { mutableStateOf(false) }
     var favoriteBtnDb = false
-
-
 
     TopAppBar(
         title = { Text(
@@ -188,7 +187,24 @@ fun DetailToolbar(
                 favoriteBtn.value = !favoriteBtn.value
 
                 if (favoriteBtn.value) {
-                    onAddFavoriteClicked.invoke(detailData.id)
+
+                    onAddFavoriteClicked.invoke(
+                        WatchListEntity(
+                            detailData.adult,
+                            detailData.backdropPath,
+                            detailData.id,
+                            detailData.originalLanguage,
+                            detailData.originalTitle,
+                            detailData.overview,
+                            detailData.popularity,
+                            detailData.posterPath,
+                            detailData.releaseDate,
+                            detailData.title,
+                            detailData.video,
+                            detailData.voteAverage,
+                            detailData.voteCount
+                        )
+                    )
                 }else {
                     onDeleteFavoriteClicked.invoke(detailData.id)
                 }
@@ -196,7 +212,7 @@ fun DetailToolbar(
             }) {
 
                 watchListData.forEach {
-                    if (detailData.id == it.moviesId) {
+                    if (detailData.id == it.id) {
                         favoriteBtnDb = true
                     }
                 }

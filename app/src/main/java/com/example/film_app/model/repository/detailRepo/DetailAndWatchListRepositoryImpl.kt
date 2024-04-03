@@ -1,5 +1,6 @@
 package com.example.film_app.model.repository.detailRepo
 
+import android.util.Log
 import com.example.film_app.model.database.MyDao
 import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.WatchListEntity
@@ -22,17 +23,18 @@ class DetailAndWatchListRepositoryImpl @Inject constructor(private val myDao: My
     override val watchList: Flow<List<WatchListEntity>> = flow {
         while (true){
             emit(myDao.getAllWatchList())
+            Log.v("VMData1" , myDao.getAllWatchList().toString())
             delay(10000)
         }
     }
 
 
-    override suspend fun insertWatchList(id: WatchListEntity) {
-        myDao.insertWatchList(id)
+    override suspend fun insertWatchList(watchList : WatchListEntity) {
+        myDao.insertWatchList(watchList)
     }
 
-    override suspend fun deleteWatchListById(id: WatchListEntity) {
-        myDao.deleteWatchListBtId(id.moviesId)
+    override suspend fun deleteWatchListById(id: Int) {
+        myDao.deleteWatchListBtId(id)
     }
 
 

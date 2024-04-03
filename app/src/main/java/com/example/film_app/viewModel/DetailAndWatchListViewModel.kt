@@ -1,5 +1,6 @@
 package com.example.film_app.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.film_app.model.database.entities.WatchListEntity
@@ -69,20 +70,23 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
 
     }
 
-    private fun getAllWatchList(id: WatchListEntity) {
+    private fun getAllWatchList(watchList: WatchListEntity) {
+
+        Log.v("VMData2" ,watchList.toString())
+
 
         _watchListState.value = WatchListState.Loading
 
-        if (id.moviesId != -1) {
+        if (watchList.id != -1) {
             viewModelScope.launch {
-                repository.insertWatchList(id)
-            }
-        }
+                repository.insertWatchList(watchList)
+            } }
 
         viewModelScope.launch {
             repository.watchList.catch {
                 _watchListState.value = WatchListState.WatchListError(it.localizedMessage)
             }.collect{
+                Log.v("VMData" , it.toString())
                 _watchListState.value = WatchListState.WatchList(it)
             }
         }
@@ -96,8 +100,8 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
         viewModelScope.launch{
 
             try {
-                if (id.moviesId != -1){
-                    repository.deleteWatchListById(id)
+                if (id.id != -1){
+                    repository.deleteWatchListById(id.id)
                 }
             }catch (e : Exception) {
                 _deleteFilmFromWatchList.value = DeleteFromWatchListState.DeleteWatchListError(e.localizedMessage)
