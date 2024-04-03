@@ -24,7 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.compose.AppTheme
+import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.ui.feature.DetailScreen
 import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen

@@ -96,7 +96,8 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     LaunchedEffect(addFilmId) {
         viewModel.dataIntent.send(
-            DetailAndWatchListIntent.FetchWatchListId(addFilmId)
+            DetailAndWatchListIntent.FetchWatchListId(addFilmId
+            )
         )
 
         viewModel.watchListState.collect{
@@ -287,7 +288,8 @@ fun CoverDetail(detailData: AllDataEntity) {
             style = TextStyle(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
-            )
+            ),
+            maxLines = 1
         )
 
     }
