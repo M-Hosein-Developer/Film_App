@@ -28,7 +28,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -61,7 +60,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     var watchListData by remember { mutableStateOf(listOf(EMPTY_DATA1)) }
     var addFilmId by remember { mutableStateOf(EMPTY_DATA1) }
-    var removeFilmId by remember { mutableIntStateOf(-1) }
+    var removeFilmId by remember { mutableStateOf(EMPTY_DATA1) }
 
     LaunchedEffect(1) {
         viewModel.dataIntent.send(DetailAndWatchListIntent.FetchAllData)
@@ -114,7 +113,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
 
     LaunchedEffect(removeFilmId) {
         viewModel.dataIntent.send(
-            DetailAndWatchListIntent.DeleteWatchListId(EMPTY_DATA1)
+            DetailAndWatchListIntent.DeleteWatchListId(removeFilmId)
         )
 
         viewModel.deleteFilmFromWatchList.collect {
@@ -161,7 +160,7 @@ fun DetailToolbar(
     watchListData : List<WatchListEntity>,
     onBackCLicked: () -> Unit,
     onAddFavoriteClicked: (WatchListEntity) -> Unit,
-    onDeleteFavoriteClicked: (Int) -> Unit
+    onDeleteFavoriteClicked: (WatchListEntity) -> Unit
 ) {
 
     val favoriteBtn = remember { mutableStateOf(false) }
@@ -207,7 +206,23 @@ fun DetailToolbar(
                         )
                     )
                 }else {
-                    onDeleteFavoriteClicked.invoke(detailData.id)
+                    onDeleteFavoriteClicked.invoke(
+                        WatchListEntity(
+                            detailData.adult,
+                            detailData.backdropPath,
+                            detailData.id,
+                            detailData.originalLanguage,
+                            detailData.originalTitle,
+                            detailData.overview,
+                            detailData.popularity,
+                            detailData.posterPath,
+                            detailData.releaseDate,
+                            detailData.title,
+                            detailData.video,
+                            detailData.voteAverage,
+                            detailData.voteCount
+                        )
+                    )
                 }
 
             }) {
