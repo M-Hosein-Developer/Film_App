@@ -1,6 +1,7 @@
 package com.example.film_app.ui.feature
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,6 +44,7 @@ import coil.compose.AsyncImage
 import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.WatchListState
+import com.example.film_app.util.BottomNavItem
 import com.example.film_app.util.EMPTY_DATA1
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 
@@ -74,7 +76,6 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
     }
 
 
-
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -82,7 +83,9 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
 
         WatchListToolbar { navController.popBackStack() }
 
-        WatchListLazy(watchListData)
+        WatchListLazy(watchListData) {
+            navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it)
+        }
 
     }
 
@@ -113,14 +116,14 @@ fun WatchListToolbar(onBackCLicked: () -> Unit) {
 }
 
 @Composable
-fun WatchListLazy(watchList: List<WatchListEntity>) {
+fun WatchListLazy(watchList: List<WatchListEntity>, onItemClick: (Int) -> Unit) {
 
     LazyColumn(
         Modifier.fillMaxSize()
     ) {
 
         items(watchList.size) {
-            WatchListLazyItem(watchList[it])
+            WatchListLazyItem(watchList[it]) { onItemClick.invoke(it) }
         }
 
     }
@@ -128,7 +131,7 @@ fun WatchListLazy(watchList: List<WatchListEntity>) {
 }
 
 @Composable
-fun WatchListLazyItem(watchList: WatchListEntity) {
+fun WatchListLazyItem(watchList: WatchListEntity, onItemClick: (Int) -> Unit) {
 
 
     Row(
@@ -137,6 +140,7 @@ fun WatchListLazyItem(watchList: WatchListEntity) {
             .fillMaxHeight()
             .padding(horizontal = 24.dp)
             .padding(vertical = 12.dp)
+            .clickable { onItemClick.invoke(watchList.id) }
 
     ) {
 
