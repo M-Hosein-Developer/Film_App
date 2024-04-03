@@ -1,75 +1,76 @@
-package com.example.compose
+package com.example.film_app.ui.theme
 import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.example.film_app.ui.theme.Typography
-import com.example.film_app.ui.theme.backgroundDark
-import com.example.film_app.ui.theme.backgroundLight
-import com.example.film_app.ui.theme.errorContainerDark
-import com.example.film_app.ui.theme.errorContainerLight
-import com.example.film_app.ui.theme.errorDark
-import com.example.film_app.ui.theme.errorLight
-import com.example.film_app.ui.theme.inverseOnSurfaceDark
-import com.example.film_app.ui.theme.inverseOnSurfaceLight
-import com.example.film_app.ui.theme.inversePrimaryDark
-import com.example.film_app.ui.theme.inversePrimaryLight
-import com.example.film_app.ui.theme.inverseSurfaceDark
-import com.example.film_app.ui.theme.inverseSurfaceLight
-import com.example.film_app.ui.theme.onBackgroundDark
-import com.example.film_app.ui.theme.onBackgroundLight
-import com.example.film_app.ui.theme.onErrorContainerDark
-import com.example.film_app.ui.theme.onErrorContainerLight
-import com.example.film_app.ui.theme.onErrorDark
-import com.example.film_app.ui.theme.onErrorLight
-import com.example.film_app.ui.theme.onPrimaryContainerDark
-import com.example.film_app.ui.theme.onPrimaryContainerLight
-import com.example.film_app.ui.theme.onPrimaryDark
-import com.example.film_app.ui.theme.onPrimaryLight
-import com.example.film_app.ui.theme.onSecondaryContainerDark
-import com.example.film_app.ui.theme.onSecondaryContainerLight
-import com.example.film_app.ui.theme.onSecondaryDark
-import com.example.film_app.ui.theme.onSecondaryLight
-import com.example.film_app.ui.theme.onSurfaceDark
-import com.example.film_app.ui.theme.onSurfaceLight
-import com.example.film_app.ui.theme.onSurfaceVariantDark
-import com.example.film_app.ui.theme.onSurfaceVariantLight
-import com.example.film_app.ui.theme.onTertiaryContainerDark
-import com.example.film_app.ui.theme.onTertiaryContainerLight
-import com.example.film_app.ui.theme.onTertiaryDark
-import com.example.film_app.ui.theme.onTertiaryLight
-import com.example.film_app.ui.theme.outlineDark
-import com.example.film_app.ui.theme.outlineLight
-import com.example.film_app.ui.theme.outlineVariantDark
-import com.example.film_app.ui.theme.outlineVariantLight
-import com.example.film_app.ui.theme.primaryContainerDark
-import com.example.film_app.ui.theme.primaryContainerLight
-import com.example.film_app.ui.theme.primaryDark
-import com.example.film_app.ui.theme.primaryLight
-import com.example.film_app.ui.theme.scrimDark
-import com.example.film_app.ui.theme.scrimLight
-import com.example.film_app.ui.theme.secondaryContainerDark
-import com.example.film_app.ui.theme.secondaryContainerLight
-import com.example.film_app.ui.theme.secondaryDark
-import com.example.film_app.ui.theme.secondaryLight
-import com.example.film_app.ui.theme.surfaceDark
-import com.example.film_app.ui.theme.surfaceDimDark
-import com.example.film_app.ui.theme.surfaceDimLight
-import com.example.film_app.ui.theme.surfaceLight
-import com.example.film_app.ui.theme.surfaceVariantDark
-import com.example.film_app.ui.theme.surfaceVariantLight
-import com.example.film_app.ui.theme.tertiaryContainerDark
-import com.example.film_app.ui.theme.tertiaryContainerLight
-import com.example.film_app.ui.theme.tertiaryDark
-import com.example.film_app.ui.theme.tertiaryLight
+import com.example.compose.backgroundDark
+import com.example.compose.backgroundLight
+import com.example.compose.errorContainerDark
+import com.example.compose.errorContainerLight
+import com.example.compose.errorDark
+import com.example.compose.errorLight
+import com.example.compose.inverseOnSurfaceDark
+import com.example.compose.inverseOnSurfaceLight
+import com.example.compose.inversePrimaryDark
+import com.example.compose.inversePrimaryLight
+import com.example.compose.inverseSurfaceDark
+import com.example.compose.inverseSurfaceLight
+import com.example.compose.onBackgroundDark
+import com.example.compose.onBackgroundLight
+import com.example.compose.onErrorContainerDark
+import com.example.compose.onErrorContainerLight
+import com.example.compose.onErrorDark
+import com.example.compose.onErrorLight
+import com.example.compose.onPrimaryContainerDark
+import com.example.compose.onPrimaryContainerLight
+import com.example.compose.onPrimaryDark
+import com.example.compose.onPrimaryLight
+import com.example.compose.onSecondaryContainerDark
+import com.example.compose.onSecondaryContainerLight
+import com.example.compose.onSecondaryDark
+import com.example.compose.onSecondaryLight
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
+import com.example.compose.onSurfaceVariantDark
+import com.example.compose.onSurfaceVariantLight
+import com.example.compose.onTertiaryContainerDark
+import com.example.compose.onTertiaryContainerLight
+import com.example.compose.onTertiaryDark
+import com.example.compose.onTertiaryLight
+import com.example.compose.outlineDark
+import com.example.compose.outlineLight
+import com.example.compose.outlineVariantDark
+import com.example.compose.outlineVariantLight
+import com.example.compose.primaryContainerDark
+import com.example.compose.primaryContainerLight
+import com.example.compose.primaryDark
+import com.example.compose.primaryLight
+import com.example.compose.scrimDark
+import com.example.compose.scrimLight
+import com.example.compose.secondaryContainerDark
+import com.example.compose.secondaryContainerLight
+import com.example.compose.secondaryDark
+import com.example.compose.secondaryLight
+import com.example.compose.surfaceDark
+import com.example.compose.surfaceLight
+import com.example.compose.surfaceVariantDark
+import com.example.compose.surfaceVariantLight
+import com.example.compose.tertiaryContainerDark
+import com.example.compose.tertiaryContainerLight
+import com.example.compose.tertiaryDark
+import com.example.compose.tertiaryLight
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -100,13 +101,6 @@ private val lightScheme = lightColorScheme(
     inverseSurface = inverseSurfaceLight,
     inverseOnSurface = inverseOnSurfaceLight,
     inversePrimary = inversePrimaryLight,
-    surfaceTint = surfaceDimLight,
-//    surfaceBright = surfaceBrightLight,
-//    surfaceContainerLowest = surfaceContainerLowestLight,
-//    surfaceContainerLow = surfaceContainerLowLight,
-//    surfaceContainer = surfaceContainerLight,
-//    surfaceContainerHigh = surfaceContainerHighLight,
-//    surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
 private val darkScheme = darkColorScheme(
@@ -138,13 +132,6 @@ private val darkScheme = darkColorScheme(
     inverseSurface = inverseSurfaceDark,
     inverseOnSurface = inverseOnSurfaceDark,
     inversePrimary = inversePrimaryDark,
-    surfaceTint = surfaceDimDark,
-//    surfaceBright = surfaceBrightDark,
-//    surfaceContainerLowest = surfaceContainerLowestDark,
-//    surfaceContainerLow = surfaceContainerLowDark,
-//    surfaceContainer = surfaceContainerDark,
-//    surfaceContainerHigh = surfaceContainerHighDark,
-//    surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
 @Immutable
@@ -167,10 +154,10 @@ fun AppTheme(
     content: @Composable() () -> Unit
 ) {
   val colorScheme = when {
-//      dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-//          val context = LocalContext.current
-//          if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-//      }
+      dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+          val context = LocalContext.current
+          if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+      }
       
       darkTheme -> darkScheme
       else -> lightScheme
