@@ -1,16 +1,23 @@
 package com.example.film_app.ui.feature
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -71,11 +80,7 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        WatchListToolbar {
-            navController.popBackStack()
-        }
-
-        Log.v("testData" , watchListData.toString())
+        WatchListToolbar { navController.popBackStack() }
 
         WatchListLazy(watchListData)
 
@@ -111,7 +116,7 @@ fun WatchListToolbar(onBackCLicked: () -> Unit) {
 fun WatchListLazy(watchList: List<WatchListEntity>) {
 
     LazyColumn(
-        Modifier.padding(horizontal = 40.dp)
+        Modifier.fillMaxSize()
     ) {
 
         items(watchList.size) {
@@ -126,21 +131,100 @@ fun WatchListLazy(watchList: List<WatchListEntity>) {
 fun WatchListLazyItem(watchList: WatchListEntity) {
 
 
-    Row {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(horizontal = 24.dp)
+            .padding(vertical = 12.dp)
+
+    ) {
 
 
         AsyncImage(
             model = "https://image.tmdb.org/t/p/w500" + watchList.posterPath,
             contentDescription = null,
             modifier = Modifier
-                .width(95.dp)
-                .height(120.dp)
+                .width(110.dp)
+                .height(180.dp)
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Crop
         )
 
 
-        Column {
-            
-            Text(text = watchList.title)
+        Column(
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .fillMaxHeight(),
+        ) {
+
+            Text(
+                text = watchList.title,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Row(
+              verticalAlignment = Alignment.CenterVertically
+            ){
+
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = null,
+                    Modifier.padding(end = 6.dp)
+                )
+
+                Text(
+                    text = watchList.voteAverage.toString(),
+                    style = TextStyle(
+                        fontSize = 12.sp
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = null,
+                    Modifier.padding(end = 6.dp)
+                )
+
+                Text(
+                    text = watchList.releaseDate,
+                    style = TextStyle(
+                        fontSize = 12.sp
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+
+                Icon(
+                    imageVector = Icons.Default.Face,
+                    contentDescription = null,
+                    Modifier.padding(end = 6.dp)
+                )
+
+                Text(
+                    text = watchList.originalLanguage,
+                    style = TextStyle(
+                        fontSize = 12.sp
+                    )
+                )
+            }
 
 
         }
