@@ -61,12 +61,17 @@ interface MyDao {
     @Query("SELECT * FROM  $TREND")
     suspend fun getAllTrendData() : List<TrendEntity>
 
+
     //All Data
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllData(moviesList: List<AllDataEntity>)
 
     @Query("SELECT * FROM  $ALLDATA_TABLE")
     suspend fun getAllData() : List<AllDataEntity>
+
+    @Query("SELECT * FROM $ALLDATA_TABLE WHERE title LIKE '%' || :search || '%'")
+    suspend fun getAllDataBySearch(search: String?): List<AllDataEntity>
+
 
     //Watch List
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -77,5 +82,6 @@ interface MyDao {
 
     @Query("DELETE FROM $WATCHLIST WHERE id = :id")
     suspend fun deleteWatchListBtId( id : Int)
+
 
 }
