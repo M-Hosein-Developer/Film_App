@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -23,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
@@ -33,6 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.film_app.R
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
@@ -188,14 +196,21 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
 @Composable
 fun Trend(trendList: List<TrendEntity> , onItemTrendClick :(Int) -> Unit) {
 
-    LazyRow(
-        Modifier.padding(start = 24.dp , end = 24.dp , top = 16.dp)
-    ) {
+    if (trendList.isNotEmpty()) {
 
-        items(trendList.size){
-            TrendItem(trendList[it]){ onItemTrendClick.invoke(it) }
+        LazyRow(
+            Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp)
+        ) {
+
+            items(trendList.size) {
+
+                TrendItem(trendList[it]) { onItemTrendClick.invoke(it) }
+            }
+
         }
 
+    } else{
+        Loading()
     }
 
 }
@@ -285,23 +300,30 @@ fun SetDataByButtons(
 
     when (clickedButton) {
         ButtonIdCategory.BUTTON_1 -> {
+            if (nowPlying.isNotEmpty())
             FilmCategoryNowPlaying(nowPlying){onItemNowPlayingClick.invoke(it)}
+            else Loading()
 
         }
         ButtonIdCategory.BUTTON_2 -> {
+            if (popular.isNotEmpty())
             FilmCategoryPopular(popular){onItemPopularClick.invoke(it)}
-
+            else Loading()
         }
         ButtonIdCategory.BUTTON_3 -> {
+            if (topRate.isNotEmpty())
             FilmCategoryTopRate(topRate){onItemTopRateClick.invoke(it)}
-
+            else Loading()
         }
         ButtonIdCategory.BUTTON_4 -> {
+            if (upcoming.isNotEmpty())
             FilmCategoryUpcoming(upcoming){onItemUpcomingClick.invoke(it)}
-
+            else Loading()
         }
         else -> {
-            FilmCategoryNowPlaying(nowPlying){onItemNowPlayingClick.invoke(it)}
+            if (nowPlying.isNotEmpty())
+                FilmCategoryNowPlaying(nowPlying){onItemNowPlayingClick.invoke(it)}
+            else Loading()
         }
     }
 
@@ -468,3 +490,28 @@ fun FilmCategoryTopRateItem(upcoming: UpcomingEntity , onItemUpcomingClick :(Int
 
 }
 
+@Composable
+fun Loading() {
+
+
+    Column(
+        Modifier.fillMaxWidth().height(300.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.RawRes(R.raw.loading)
+        )
+
+        LottieAnimation(
+            composition = composition,
+            iterations = LottieConstants.IterateForever,
+            modifier = Modifier.size(100.dp)
+        )
+
+    }
+
+
+}
