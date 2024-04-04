@@ -24,14 +24,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.ui.feature.DetailScreen
 import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen
 import com.example.film_app.ui.feature.WatchListScreen
+import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.util.BottomNavItem
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 import com.example.film_app.viewModel.HomeViewModel
+import com.example.film_app.viewModel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
 
     private val homeViewModel : HomeViewModel by viewModels()
     private val detailAndWatchListViewModel : DetailAndWatchListViewModel by viewModels()
+    private val searchViewModel : SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +54,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel)
+                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel)
                 }
             }
         }
@@ -64,7 +66,8 @@ class MainActivity : ComponentActivity() {
 fun BottomBar(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
-    detailAndWatchListViewModel: DetailAndWatchListViewModel
+    detailAndWatchListViewModel: DetailAndWatchListViewModel,
+    searchViewModel: SearchViewModel
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
@@ -129,7 +132,7 @@ fun BottomBar(
             }
 
             composable(BottomNavItem.SearchScreen.rout){
-                SearchScreen()
+                SearchScreen(searchViewModel , navController)
                 isVisible = true
             }
             composable(BottomNavItem.WatchListScreen.rout){

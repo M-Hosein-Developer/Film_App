@@ -83,9 +83,9 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        if(watchListData.isNotEmpty()) {
+        WatchListToolbar { navController.popBackStack() }
 
-            WatchListToolbar { navController.popBackStack() }
+        if(watchListData.isNotEmpty()) {
 
             WatchListLazy(watchListData) {
                 navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it)
@@ -108,7 +108,7 @@ fun WatchListToolbar(onBackCLicked: () -> Unit) {
             text = "Watch List",
             Modifier
                 .fillMaxWidth()
-                .padding(end = 24.dp),
+                .padding(end = 42.dp),
             textAlign = TextAlign.Center,
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
