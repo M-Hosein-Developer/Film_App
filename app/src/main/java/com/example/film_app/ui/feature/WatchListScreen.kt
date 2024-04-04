@@ -130,6 +130,7 @@ fun WatchListLazy(watchList: List<WatchListEntity>, onItemClick: (Int) -> Unit) 
 
     LazyColumn(
         Modifier.fillMaxSize()
+            .padding(bottom = 70.dp)
     ) {
 
         items(watchList.size) {
@@ -147,6 +148,7 @@ fun WatchListLazyItem(watchList: WatchListEntity, onItemClick: (Int) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.Start,
         modifier = Modifier
+            .fillMaxWidth()
             .fillMaxHeight()
             .padding(horizontal = 24.dp)
             .padding(vertical = 12.dp)
