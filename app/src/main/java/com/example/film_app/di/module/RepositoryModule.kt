@@ -4,6 +4,8 @@ import com.example.film_app.model.repository.detailRepo.DetailAndWatchListReposi
 import com.example.film_app.model.repository.detailRepo.DetailAndWatchListRepositoryImpl
 import com.example.film_app.model.repository.homeRepo.HomeRepository
 import com.example.film_app.model.repository.homeRepo.HomeRepositoryImpl
+import com.example.film_app.model.repository.searchRepo.SearchRepository
+import com.example.film_app.model.repository.searchRepo.SearchRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,6 +21,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun detailRepository(mainRepository: DetailAndWatchListRepositoryImpl) : DetailAndWatchListRepository
+
+    @Binds
+    abstract fun searchRepository(mainRepository: SearchRepositoryImpl) : SearchRepository
 
 
 }
