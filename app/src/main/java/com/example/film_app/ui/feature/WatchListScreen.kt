@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.film_app.R
 import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.WatchListState
@@ -81,10 +83,16 @@ fun WatchListScreen(viewModel: DetailAndWatchListViewModel, navController: NavHo
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        WatchListToolbar { navController.popBackStack() }
+        if(watchListData.isNotEmpty()) {
 
-        WatchListLazy(watchListData) {
-            navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it)
+            WatchListToolbar { navController.popBackStack() }
+
+            WatchListLazy(watchListData) {
+                navController.navigate(BottomNavItem.DetailScreen.rout + "/" + it)
+            }
+
+        }else {
+            EmptyList()
         }
 
     }
@@ -98,7 +106,9 @@ fun WatchListToolbar(onBackCLicked: () -> Unit) {
     TopAppBar(
         title = { Text(
             text = "Watch List",
-            Modifier.fillMaxWidth(),
+            Modifier
+                .fillMaxWidth()
+                .padding(end = 24.dp),
             textAlign = TextAlign.Center,
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
@@ -233,6 +243,43 @@ fun WatchListLazyItem(watchList: WatchListEntity, onItemClick: (Int) -> Unit) {
 
         }
 
+
+    }
+
+}
+
+@Composable
+fun EmptyList(){
+
+    Column(
+        Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        AsyncImage(
+            model = R.drawable.empty ,
+            contentDescription = null,
+            modifier = Modifier.size(80.dp)
+            )
+        
+        Text(
+            text = "There is no movie yet!",
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            ),
+            modifier = Modifier.padding(top = 16.dp)
+        )
+
+        Text(
+            text = "Find your movie by Type title, categories, years, etc ",
+            style = TextStyle(
+                fontWeight = FontWeight.Light,
+                fontSize = 14.sp
+            ),
+            modifier = Modifier.padding(top = 12.dp)
+        )
 
     }
 
