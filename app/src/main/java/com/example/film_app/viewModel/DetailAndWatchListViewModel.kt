@@ -8,6 +8,7 @@ import com.example.film_app.model.repository.detailRepo.DetailAndWatchListReposi
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.DeleteFromWatchListState
 import com.example.film_app.ui.state.detailState.DetailState
+import com.example.film_app.ui.state.detailState.TrailerState
 import com.example.film_app.ui.state.detailState.WatchListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -31,8 +32,13 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
     private val _watchListState = MutableStateFlow<WatchListState>(WatchListState.Idle)
     val watchListState : StateFlow<WatchListState> get() = _watchListState
 
-    private val _deleteFilmFromWatchList = MutableStateFlow<DeleteFromWatchListState>(DeleteFromWatchListState.Idle)
-    val deleteFilmFromWatchList : StateFlow<DeleteFromWatchListState> get() = _deleteFilmFromWatchList
+    //Delete Favorite Film
+    private val _deleteFilmFromWatchListState = MutableStateFlow<DeleteFromWatchListState>(DeleteFromWatchListState.Idle)
+    val deleteFilmFromWatchListState : StateFlow<DeleteFromWatchListState> get() = _deleteFilmFromWatchListState
+
+    //Trailer
+    private val _trailerState = MutableStateFlow<TrailerState>(TrailerState.Idle)
+    val trailerState : StateFlow<TrailerState> get() = _trailerState
 
 
     init {
@@ -48,12 +54,14 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
                     is DetailAndWatchListIntent.FetchAllData -> getAllDataFromDb()
                     is DetailAndWatchListIntent.FetchWatchListId -> getAllWatchList(it.id)
                     is DetailAndWatchListIntent.DeleteWatchListId -> deleteFavoriteFilmFromWatchList(it.id)
+                    is DetailAndWatchListIntent.FetchTrailerById -> getTrailerList(it.id)
 
                 }
 
             }
 
     }
+
 
     private fun getAllDataFromDb() {
 
@@ -95,7 +103,7 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
 
     private fun deleteFavoriteFilmFromWatchList(id: WatchListEntity) {
 
-        _deleteFilmFromWatchList.value = DeleteFromWatchListState.Loading
+        _deleteFilmFromWatchListState.value = DeleteFromWatchListState.Loading
 
         viewModelScope.launch{
 
@@ -104,7 +112,23 @@ class DetailAndWatchListViewModel @Inject constructor(private val repository: De
                     repository.deleteWatchListById(id.id)
                 }
             }catch (e : Exception) {
-                _deleteFilmFromWatchList.value = DeleteFromWatchListState.DeleteWatchListError(e.localizedMessage)
+                _deleteFilmFromWatchListState.value = DeleteFromWatchListState.DeleteWatchListError(e.localizedMessage)
+            }
+
+        }
+
+    }
+
+    private fun getTrailerList(id: Int) {
+
+        _trailerState.value = TrailerState.Loading
+
+        viewModelScope.launch {
+
+            repository.trailerById(id).catch {
+                _trailerState.value = TrailerState.TrailerError(it.localizedMessage)
+            }.collect{
+                _trailerState.value = TrailerState.TrailerDataById(it)
             }
 
         }
