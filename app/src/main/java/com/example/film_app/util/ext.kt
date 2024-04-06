@@ -8,6 +8,7 @@ import com.example.film_app.model.database.entities.TopRatedEntity
 import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
 import com.example.film_app.model.database.entities.WatchListEntity
+import com.example.movies.model.apiService.TrailerResponse
 
 fun getAllNowPlay(response : ResponseMovies): List<NowPlayingEntity> {
 
@@ -201,4 +202,17 @@ val EMPTY_DATA1 = WatchListEntity(
     false ,
     0.0 ,
     -1
+)
+
+val TRAILER_EMPTY_DATA = TrailerResponse.MoviesResult(
+    "" ,
+    "" ,
+    "" ,
+    "" ,
+    "" ,
+    false ,
+    "" ,
+    "" ,
+    -1 ,
+    ""
 )

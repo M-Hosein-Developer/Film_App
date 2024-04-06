@@ -31,6 +31,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,11 +41,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.film_app.model.database.entities.AllDataEntity
@@ -52,11 +55,17 @@ import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.DeleteFromWatchListState
 import com.example.film_app.ui.state.detailState.DetailState
+import com.example.film_app.ui.state.detailState.TrailerState
 import com.example.film_app.ui.state.detailState.WatchListState
 import com.example.film_app.util.ButtonIdDetail
 import com.example.film_app.util.EMPTY_DATA
 import com.example.film_app.util.EMPTY_DATA1
+import com.example.film_app.util.TRAILER_EMPTY_DATA
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
+import com.example.movies.model.apiService.TrailerResponse
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 @Composable
 fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostController, moviesId: Int) {
@@ -66,6 +75,9 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
     var watchListData by remember { mutableStateOf(listOf(EMPTY_DATA1)) }
     var addFilmId by remember { mutableStateOf(EMPTY_DATA1) }
     var removeFilmId by remember { mutableStateOf(EMPTY_DATA1) }
+
+    var trailerId by remember { mutableIntStateOf(-1) }
+    var trailerData by remember { mutableStateOf(listOf(TRAILER_EMPTY_DATA)) }
 
     LaunchedEffect(1) {
         viewModel.dataIntent.send(DetailAndWatchListIntent.FetchAllData)
@@ -117,11 +129,9 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
     }
 
     LaunchedEffect(removeFilmId) {
-        viewModel.dataIntent.send(
-            DetailAndWatchListIntent.DeleteWatchListId(removeFilmId)
-        )
+        viewModel.dataIntent.send(DetailAndWatchListIntent.DeleteWatchListId(removeFilmId))
 
-        viewModel.deleteFilmFromWatchList.collect {
+        viewModel.deleteFilmFromWatchListState.collect {
             when (it) {
 
                 is DeleteFromWatchListState.Idle -> {}
@@ -129,6 +139,27 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
                 is DeleteFromWatchListState.DeleteWatchListError -> {}
 
             }
+        }
+
+    }
+
+    LaunchedEffect(trailerId) {
+        viewModel.dataIntent.send(DetailAndWatchListIntent.FetchTrailerById(trailerId))
+
+        viewModel.trailerState.collect {
+
+            when (it) {
+
+                is TrailerState.Idle -> {}
+                is TrailerState.Loading -> {}
+                is TrailerState.TrailerDataById -> {
+                    trailerData = it.trailerData
+                }
+
+                is TrailerState.TrailerError -> {}
+
+            }
+
         }
 
     }
@@ -152,7 +183,7 @@ fun DetailScreen(viewModel: DetailAndWatchListViewModel, navController: NavHostC
             }
         )
 
-        DetailInfo(detailData)
+        DetailInfo(detailData, trailerData){ trailerId = it }
 
     }
 
@@ -253,7 +284,7 @@ fun DetailToolbar(
 }
 
 @Composable
-fun DetailInfo(detailData: AllDataEntity) {
+fun DetailInfo(detailData: AllDataEntity, trailerData: List<TrailerResponse.MoviesResult> , onTrailerClick: (Int) -> Unit) {
 
     Column(
         Modifier
@@ -265,7 +296,7 @@ fun DetailInfo(detailData: AllDataEntity) {
 
         DescriptionFilm(detailData)
 
-        ChangeAboutScreenByButton(detailData)
+        ChangeAboutScreenByButton(detailData, trailerData){ onTrailerClick.invoke(it) }
     }
 
 }
@@ -411,7 +442,11 @@ fun DescriptionFilm(detailData: AllDataEntity) {
 }
 
 @Composable
-fun ChangeAboutScreenByButton(detailData: AllDataEntity) {
+fun ChangeAboutScreenByButton(
+    detailData: AllDataEntity,
+    trailerData: List<TrailerResponse.MoviesResult>,
+    onTrailerClick: (Int) -> Unit
+) {
 
     var clickedButton by remember { mutableStateOf<ButtonIdDetail?>(null) }
 
@@ -435,7 +470,10 @@ fun ChangeAboutScreenByButton(detailData: AllDataEntity) {
             }
 
             Button(
-                onClick = { clickedButton = ButtonIdDetail.BUTTON_2 },
+                onClick = {
+                    clickedButton = ButtonIdDetail.BUTTON_2
+                    onTrailerClick.invoke(detailData.id)
+                },
                 shape = RectangleShape,
                 modifier = Modifier.weight(0.5f)
             ) {
@@ -452,7 +490,8 @@ fun ChangeAboutScreenByButton(detailData: AllDataEntity) {
         }
 
         ButtonIdDetail.BUTTON_2 -> {
-
+            if (trailerData[0].id != "")
+            Trailer(trailerData)
         }
 
         else -> AboutFilm(detailData)
@@ -488,5 +527,42 @@ fun AboutFilm(detailData: AllDataEntity) {
 
     }
 
+
+}
+
+@Composable
+fun Trailer(trailerData: List<TrailerResponse.MoviesResult>) {
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    Column {
+
+        AndroidView(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(18.dp)
+                .clip(RoundedCornerShape(16.dp)),
+            factory = {context ->
+
+            YouTubePlayerView(context).apply {
+
+                lifecycleOwner.lifecycle.addObserver(this)
+
+                addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+
+                        youTubePlayer.loadVideo(trailerData[0].key , 0f)
+                        youTubePlayer.play()
+                        youTubePlayer.unMute()
+                    }
+
+                })
+
+            }
+
+        })
+
+    }
 
 }
