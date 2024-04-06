@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +53,7 @@ import com.example.film_app.ui.intent.DetailAndWatchListIntent
 import com.example.film_app.ui.state.detailState.DeleteFromWatchListState
 import com.example.film_app.ui.state.detailState.DetailState
 import com.example.film_app.ui.state.detailState.WatchListState
+import com.example.film_app.util.ButtonIdDetail
 import com.example.film_app.util.EMPTY_DATA
 import com.example.film_app.util.EMPTY_DATA1
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
@@ -251,17 +256,20 @@ fun DetailToolbar(
 fun DetailInfo(detailData: AllDataEntity) {
 
     Column(
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
 
         CoverDetail(detailData)
 
         DescriptionFilm(detailData)
 
-        AboutFilm(detailData)
+        ChangeAboutScreenByButton(detailData)
     }
 
 }
+
 
 @Composable
 fun CoverDetail(detailData: AllDataEntity) {
@@ -398,6 +406,56 @@ fun DescriptionFilm(detailData: AllDataEntity) {
             )
         }
 
+    }
+
+}
+
+@Composable
+fun ChangeAboutScreenByButton(detailData: AllDataEntity) {
+
+    var clickedButton by remember { mutableStateOf<ButtonIdDetail?>(null) }
+
+    Column(
+        Modifier.fillMaxSize()
+    ){
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 38.dp)
+                .clip(RoundedCornerShape(12.dp)),
+        ) {
+
+            Button(
+                onClick = { clickedButton = ButtonIdDetail.BUTTON_1 },
+                shape = RectangleShape,
+                modifier = Modifier.weight(0.5f)
+            ) {
+                Text(text = "OVERVIEW")
+            }
+
+            Button(
+                onClick = { clickedButton = ButtonIdDetail.BUTTON_2 },
+                shape = RectangleShape,
+                modifier = Modifier.weight(0.5f)
+            ) {
+                Text(text = "TRAILER")
+            }
+
+        }
+
+    }
+
+    when (clickedButton) {
+        ButtonIdDetail.BUTTON_1 -> {
+            AboutFilm(detailData)
+        }
+
+        ButtonIdDetail.BUTTON_2 -> {
+
+        }
+
+        else -> AboutFilm(detailData)
     }
 
 }
