@@ -7,5 +7,6 @@ sealed class DetailAndWatchListIntent {
     data object FetchAllData : DetailAndWatchListIntent()
     data class FetchWatchListId(val id : WatchListEntity) : DetailAndWatchListIntent()
     data class DeleteWatchListId(val id : WatchListEntity) : DetailAndWatchListIntent()
+    data class FetchTrailerById(val id : Int) : DetailAndWatchListIntent()
 
 }
