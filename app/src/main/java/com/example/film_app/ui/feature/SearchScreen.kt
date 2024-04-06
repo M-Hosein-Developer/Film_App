@@ -162,11 +162,12 @@ fun SearchBox(edtValue: String, icon: ImageVector, hint: String, onValueChanges:
 fun SearchResult(dataBySearch: List<AllDataEntity> , onItemClick: (Int) -> Unit) {
 
     LazyColumn(
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
             .padding(bottom = 70.dp)
     ) {
 
-        items(dataBySearch.size){
+        items(dataBySearch.size){ it ->
             SearchResultItem(dataBySearch[it]) { onItemClick.invoke(it) }
         }
 
@@ -281,8 +282,6 @@ fun SearchResultItem(dataBySearch : AllDataEntity , onItemClick: (Int) -> Unit) 
     }
 
 }
-
-
 
 @Composable
 fun EmptyListSearch(){
