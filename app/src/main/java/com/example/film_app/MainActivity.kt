@@ -150,7 +150,7 @@ fun BottomBar(
             }
 
             composable(BottomNavItem.FirstRunScreen.rout){
-                FirstRunScreen()
+                FirstRunScreen(navController)
                 isVisible = false
             }
 
