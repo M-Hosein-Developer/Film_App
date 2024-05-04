@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.film_app.ui.feature.DetailScreen
+import com.example.film_app.ui.feature.FirstRunScreen
 import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen
 import com.example.film_app.ui.feature.WatchListScreen
@@ -124,7 +125,7 @@ fun BottomBar(
         }
     ) {
 
-        NavHost(navController = navController, startDestination = BottomNavItem.HomeScreen.rout){
+        NavHost(navController = navController, startDestination = BottomNavItem.FirstRunScreen.rout){
 
             composable(BottomNavItem.HomeScreen.rout){
                 HomeScreen(homeViewModel , navController)
@@ -145,6 +146,11 @@ fun BottomBar(
                 arguments = listOf(navArgument("DetailNav"){type = NavType.IntType})
                 ){
                 DetailScreen(detailAndWatchListViewModel , navController , it.arguments!!.getInt("DetailNav" , -1))
+                isVisible = false
+            }
+
+            composable(BottomNavItem.FirstRunScreen.rout){
+                FirstRunScreen()
                 isVisible = false
             }
 
