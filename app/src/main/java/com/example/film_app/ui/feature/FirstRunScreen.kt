@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,10 @@ import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -48,9 +53,9 @@ import kotlin.math.absoluteValue
 @Composable
 fun FirstRunScreen(navController: NavHostController) {
 
-
     Column(
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
     ) {
 
 
@@ -72,6 +77,23 @@ fun FirstRunScreen(navController: NavHostController) {
 
 
         CustomSlider(sliderList = sliderList , sliderTextList = sliderTextList)
+
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp)
+                .padding(horizontal = 32.dp),
+        ) {
+            Text(
+                text = "Lets GO",
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+            Icon(imageVector = Icons.Default.KeyboardArrowRight , contentDescription = null)
+        }
 
 
     }
@@ -104,7 +126,9 @@ fun CustomSlider(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.9f)
     ) {
 
         Row(
@@ -179,6 +203,7 @@ fun CustomSlider(
         Row(
             modifier
                 .height(50.dp)
+                .padding(top = 20.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.Center
         ) {
             repeat(sliderList.size) {
@@ -195,6 +220,7 @@ fun CustomSlider(
                     })
             }
         }
+
 
     }
 
