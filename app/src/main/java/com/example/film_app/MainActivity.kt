@@ -29,6 +29,7 @@ import com.example.film_app.ui.feature.FirstRunScreen
 import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen
 import com.example.film_app.ui.feature.SignInScreen
+import com.example.film_app.ui.feature.SignUpScreen
 import com.example.film_app.ui.feature.WatchListScreen
 import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.util.BottomNavItem
@@ -157,6 +158,11 @@ fun BottomBar(
 
             composable(BottomNavItem.SignInScreen.rout){
                 SignInScreen(navController)
+                isVisible = false
+            }
+
+            composable(BottomNavItem.SignUpScreen.rout){
+                SignUpScreen(navController)
                 isVisible = false
             }
 
