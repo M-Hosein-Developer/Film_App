@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.film_app.R
+import com.example.film_app.util.BottomNavItem
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
@@ -79,7 +80,7 @@ fun FirstRunScreen(navController: NavHostController) {
         CustomSlider(sliderList = sliderList , sliderTextList = sliderTextList)
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate(BottomNavItem.SignInScreen.rout) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 32.dp)
