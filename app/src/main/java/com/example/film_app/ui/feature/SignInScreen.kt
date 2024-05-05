@@ -54,7 +54,7 @@ fun SignInScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Password(values = password, label = "Email") {
+        Password(values = password, label = "Password") {
             password = it
         }
 
