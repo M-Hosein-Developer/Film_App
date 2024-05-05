@@ -15,4 +15,5 @@ sealed class BottomNavItem(val rout : String , val icon : ImageVector , val labe
     object DetailScreen : BottomNavItem("DetailScreen", Icons.Outlined.FavoriteBorder, "Detail")
     object FirstRunScreen : BottomNavItem("FirstRunScreen", Icons.Outlined.Add, "Intro")
     object SignInScreen : BottomNavItem("SignInScreen", Icons.Outlined.Add, "SignIn")
+    object SignUpScreen : BottomNavItem("SignUpScreen", Icons.Outlined.Add, "SignUp")
 }

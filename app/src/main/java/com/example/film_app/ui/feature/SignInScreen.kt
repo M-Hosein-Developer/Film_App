@@ -79,7 +79,7 @@ fun SignInScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        SignUpText{  }
+        SignUpText{ navController.navigate(BottomNavItem.SignUpScreen.rout) }
 
     }
 
