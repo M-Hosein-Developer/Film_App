@@ -157,6 +157,7 @@ fun BottomBar(
 
             composable(BottomNavItem.SignInScreen.rout){
                 SignInScreen(navController)
+                isVisible = false
             }
 
         }
