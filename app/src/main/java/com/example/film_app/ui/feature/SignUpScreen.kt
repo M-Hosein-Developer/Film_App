@@ -1,5 +1,6 @@
 package com.example.film_app.ui.feature
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,14 +20,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,14 +38,35 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.film_app.ui.intent.RegisterIntent
+import com.example.film_app.ui.state.registerState.SignUpState
 import com.example.film_app.util.BottomNavItem
+import com.example.film_app.viewModel.RegisterViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun SignUpScreen(navController: NavHostController) {
+fun SignUpScreen(navController: NavHostController, viewModel: RegisterViewModel) {
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.signUpState.collect {
+            when (it) {
+                is SignUpState.Idle -> {}
+                is SignUpState.IsRegister -> {
+                    Toast.makeText(context, it.success, Toast.LENGTH_SHORT).show()
+                }
+
+                is SignUpState.RegisterError -> {
+                    Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     Column(
         Modifier.fillMaxSize(),
@@ -68,7 +93,27 @@ fun SignUpScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = { navController.navigate(BottomNavItem.HomeScreen.rout) },
+            onClick = {
+                if (password == confirmPassword && password.isNotEmpty() && confirmPassword.isNotEmpty() && username.isNotEmpty()) {
+                    scope.launch {
+                        viewModel.dataIntent.send(RegisterIntent.SignUp(username, password))
+                    }
+                    navController.navigate(BottomNavItem.HomeScreen.rout) {
+                        popUpTo(BottomNavItem.SignUpScreen.rout) {
+                            inclusive = true
+                        }
+                    }
+                    Toast.makeText(context, "Register Successful", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Complete the field or check password",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            },
             shape = RectangleShape,
             modifier = Modifier
                 .fillMaxWidth()
@@ -86,7 +131,13 @@ fun SignUpScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        SignInText{ navController.navigate(BottomNavItem.SignInScreen.rout) }
+        SignInText {
+            navController.navigate(BottomNavItem.SignInScreen.rout) {
+                popUpTo(BottomNavItem.SignUpScreen.rout){
+                    inclusive = true
+                }
+            }
+        }
 
     }
 

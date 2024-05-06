@@ -35,6 +35,7 @@ import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.util.BottomNavItem
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 import com.example.film_app.viewModel.HomeViewModel
+import com.example.film_app.viewModel.RegisterViewModel
 import com.example.film_app.viewModel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
     private val homeViewModel : HomeViewModel by viewModels()
     private val detailAndWatchListViewModel : DetailAndWatchListViewModel by viewModels()
     private val searchViewModel : SearchViewModel by viewModels()
+    private val registerViewModel : RegisterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +59,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel)
+                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel)
                 }
             }
         }
@@ -70,7 +72,8 @@ fun BottomBar(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
     detailAndWatchListViewModel: DetailAndWatchListViewModel,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    registerViewModel: RegisterViewModel
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
@@ -162,7 +165,7 @@ fun BottomBar(
             }
 
             composable(BottomNavItem.SignUpScreen.rout){
-                SignUpScreen(navController)
+                SignUpScreen(navController , registerViewModel)
                 isVisible = false
             }
 
