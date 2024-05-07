@@ -1,6 +1,7 @@
 package com.example.film_app
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,6 +39,7 @@ import com.example.film_app.viewModel.HomeViewModel
 import com.example.film_app.viewModel.RegisterViewModel
 import com.example.film_app.viewModel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -46,6 +48,7 @@ class MainActivity : ComponentActivity() {
     private val detailAndWatchListViewModel : DetailAndWatchListViewModel by viewModels()
     private val searchViewModel : SearchViewModel by viewModels()
     private val registerViewModel : RegisterViewModel by viewModels()
+    @Inject lateinit var sharedPref : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +62,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel)
+                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel , sharedPref)
                 }
             }
         }
@@ -73,7 +76,8 @@ fun BottomBar(
     homeViewModel: HomeViewModel,
     detailAndWatchListViewModel: DetailAndWatchListViewModel,
     searchViewModel: SearchViewModel,
-    registerViewModel: RegisterViewModel
+    registerViewModel: RegisterViewModel,
+    sharedPref: SharedPreferences
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
@@ -130,7 +134,8 @@ fun BottomBar(
         }
     ) {
 
-        NavHost(navController = navController, startDestination = BottomNavItem.FirstRunScreen.rout){
+        NavHost(navController = navController, startDestination = if (sharedPref.getString("signIn" , "null") == "successful") BottomNavItem.HomeScreen.rout else BottomNavItem.FirstRunScreen.rout){
+
 
             composable(BottomNavItem.HomeScreen.rout){
                 HomeScreen(homeViewModel , navController)
