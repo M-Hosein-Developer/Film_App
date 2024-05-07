@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.film_app.ui.intent.RegisterIntent
+import com.example.film_app.ui.state.registerState.SignInState
 import com.example.film_app.ui.state.registerState.SignUpState
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -19,8 +20,13 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor() : ViewModel(){
 
     val dataIntent = Channel<RegisterIntent>()
+
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Idle)
     val signUpState : StateFlow<SignUpState> get() = _signUpState
+
+    private val _signInState = MutableStateFlow<SignInState>(SignInState.Idle)
+    val signInState : StateFlow<SignInState> get() = _signInState
+
 
     init {
         handleIntent()
@@ -34,11 +40,41 @@ class RegisterViewModel @Inject constructor() : ViewModel(){
 
                 when(it){
                     is RegisterIntent.SignUp -> signUpFire(it.username , it.password)
+                    is RegisterIntent.SignIn -> signInFire(it.username , it.password)
                 }
 
             }
 
         }
+
+    }
+
+    private fun signInFire(username: String, password: String) {
+
+        val auth = Firebase.auth
+
+        auth.signInWithEmailAndPassword(
+            username,
+           password
+        )
+            .addOnCompleteListener(){ task ->
+                if (task.isSuccessful) {
+
+//                    val pref = this.getSharedPreferences(
+//                        "Successful SignIn",
+//                        Context.MODE_PRIVATE
+//                    )
+//                    val editor = pref.edit()
+//                    editor.putString("signIn", "successful")
+//                    editor.apply()
+
+                    _signInState.value = SignInState.IsRegister("SignIn Successful")
+
+                } else {
+                    _signInState.value = SignInState.RegisterError("SignIn Not Successful")
+                }
+
+            }
 
     }
 
