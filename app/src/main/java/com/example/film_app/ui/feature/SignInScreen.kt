@@ -61,7 +61,13 @@ fun SignInScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = { navController.navigate(BottomNavItem.HomeScreen.rout) },
+            onClick = {
+                navController.navigate(BottomNavItem.HomeScreen.rout) {
+                    popUpTo(BottomNavItem.SignInScreen.rout) {
+                        inclusive = true
+                    }
+                }
+            },
             shape = RectangleShape,
             modifier = Modifier
                 .fillMaxWidth()
@@ -79,7 +85,13 @@ fun SignInScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        SignUpText{ navController.navigate(BottomNavItem.SignUpScreen.rout) }
+        SignUpText {
+            navController.navigate(BottomNavItem.SignUpScreen.rout) {
+                popUpTo(BottomNavItem.SignInScreen.rout) {
+                    inclusive = true
+                }
+            }
+        }
 
     }
 
