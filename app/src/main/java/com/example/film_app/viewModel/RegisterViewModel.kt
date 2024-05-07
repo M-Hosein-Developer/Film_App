@@ -1,5 +1,6 @@
 package com.example.film_app.viewModel
 
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor() : ViewModel(){
+class RegisterViewModel @Inject constructor(private val sharedPrf : SharedPreferences) : ViewModel(){
 
     val dataIntent = Channel<RegisterIntent>()
 
@@ -60,13 +61,9 @@ class RegisterViewModel @Inject constructor() : ViewModel(){
             .addOnCompleteListener(){ task ->
                 if (task.isSuccessful) {
 
-//                    val pref = this.getSharedPreferences(
-//                        "Successful SignIn",
-//                        Context.MODE_PRIVATE
-//                    )
-//                    val editor = pref.edit()
-//                    editor.putString("signIn", "successful")
-//                    editor.apply()
+                    val editor = sharedPrf.edit()
+                    editor.putString("signIn", "successful")
+                    editor.apply()
 
                     _signInState.value = SignInState.IsRegister("SignIn Successful")
 
@@ -87,16 +84,11 @@ class RegisterViewModel @Inject constructor() : ViewModel(){
 
             if (task.isSuccessful) {
 
+                val editor = sharedPrf.edit()
+                editor.putString("signIn", "successful")
+                editor.apply()
+
                 _signUpState.value = SignUpState.IsRegister("Register Successful")
-
-                Log.v("testFirebase" , username)
-//                val pref = this.getSharedPreferences(
-//                    "Successful SignIn", Context.MODE_PRIVATE
-//                )
-//                val editor = pref.edit()
-//                editor.putString("signIn", "successful")
-//                editor.apply()
-
             } else {
                 Log.v("testFirebase" , task.toString())
                _signUpState.value = SignUpState.RegisterError("Register Not Successful")
