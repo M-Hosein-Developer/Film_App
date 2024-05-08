@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -116,6 +117,7 @@ fun BottomBar(
                 ) {
 
 
+
                 }
 
                 Divider()
@@ -124,6 +126,48 @@ fun BottomBar(
                     label = { Text(text = "Home") },
                     selected = false,
                     icon = { Icon(imageVector = Icons.Outlined.Home, contentDescription = null) },
+                    onClick = {
+                        navController.navigate(BottomNavItem.HomeScreen.rout){
+                            popUpTo(BottomNavItem.HomeScreen.rout)
+                        }
+                        scope.launch {
+                            drawerState.apply {
+                                if (isClosed) open() else close()
+                            }
+                        }
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = { Text(text = "Setting") },
+                    selected = false,
+                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
+                    onClick = {
+                        scope.launch {
+                            drawerState.apply {
+                                if (isClosed) open() else close()
+                            }
+                        }
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = { Text(text = "Info") },
+                    selected = false,
+                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
+                    onClick = {
+                        scope.launch {
+                            drawerState.apply {
+                                if (isClosed) open() else close()
+                            }
+                        }
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = { Text(text = "FAQ") },
+                    selected = false,
+                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
                     onClick = {
                         scope.launch {
                             drawerState.apply {
