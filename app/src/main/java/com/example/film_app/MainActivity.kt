@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -58,6 +57,7 @@ import com.example.film_app.ui.feature.DetailScreen
 import com.example.film_app.ui.feature.FirstRunScreen
 import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.SearchScreen
+import com.example.film_app.ui.feature.SettingScreen
 import com.example.film_app.ui.feature.SignInScreen
 import com.example.film_app.ui.feature.SignUpScreen
 import com.example.film_app.ui.feature.WatchListScreen
@@ -177,9 +177,7 @@ fun BottomBar(
                     selected = false,
                     icon = { Icon(imageVector = Icons.Outlined.Home, contentDescription = null) },
                     onClick = {
-                        navController.navigate(BottomNavItem.HomeScreen.rout){
-                            popUpTo(BottomNavItem.HomeScreen.rout)
-                        }
+                        navController.navigate(BottomNavItem.HomeScreen.rout)
                         scope.launch {
                             drawerState.apply {
                                 if (isClosed) open() else close()
@@ -191,8 +189,9 @@ fun BottomBar(
                 NavigationDrawerItem(
                     label = { Text(text = "Setting") },
                     selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
+                    icon = { Icon(imageVector = Icons.Outlined.Info, contentDescription = null) },
                     onClick = {
+                        navController.navigate(BottomNavItem.SettingScreen.rout)
                         scope.launch {
                             drawerState.apply {
                                 if (isClosed) open() else close()
@@ -206,6 +205,7 @@ fun BottomBar(
                     selected = false,
                     icon = { Icon(imageVector = Icons.Outlined.Info, contentDescription = null) },
                     onClick = {
+                        navController.navigate(BottomNavItem.HomeScreen.rout)
                         scope.launch {
                             drawerState.apply {
                                 if (isClosed) open() else close()
@@ -219,6 +219,7 @@ fun BottomBar(
                     selected = false,
                     icon = { Icon(painter = painterResource(R.drawable.outline_question_mark_24), contentDescription = null) },
                     onClick = {
+                        navController.navigate(BottomNavItem.HomeScreen.rout)
                         scope.launch {
                             drawerState.apply {
                                 if (isClosed) open() else close()
@@ -227,7 +228,6 @@ fun BottomBar(
                     }
                 )
 
-                // ...other drawer items
             }
         }
     ) {
@@ -332,6 +332,11 @@ fun BottomBar(
 
                 composable(BottomNavItem.SignUpScreen.rout) {
                     SignUpScreen(navController, registerViewModel)
+                    isVisible = false
+                }
+
+                composable(BottomNavItem.SettingScreen.rout) {
+                    SettingScreen()
                     isVisible = false
                 }
 
