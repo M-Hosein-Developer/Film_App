@@ -1,5 +1,3 @@
-@file:Suppress("NAME_SHADOWING")
-
 package com.example.film_app
 
 import android.annotation.SuppressLint
@@ -10,10 +8,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
@@ -37,14 +39,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import coil.compose.AsyncImage
 import com.example.film_app.ui.feature.DetailScreen
 import com.example.film_app.ui.feature.FirstRunScreen
 import com.example.film_app.ui.feature.HomeScreen
@@ -102,8 +111,6 @@ fun BottomBar(
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
-
-    val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -115,12 +122,51 @@ fun BottomBar(
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.35f)
+                        .height(290.dp)
                         .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     verticalArrangement = Arrangement.Bottom
                 ) {
 
-                    
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                    ) {
+
+                        AsyncImage(
+                            model = R.drawable.popcorn,
+                            contentDescription = null,
+                            alignment = Alignment.Center,
+                            modifier = Modifier
+                                .matchParentSize()
+                                .size(200.dp)
+                                .blur(12.dp)
+                            )
+
+                        Column(
+                            Modifier
+                                .fillMaxSize()
+                                .padding(start = 18.dp),
+                            verticalArrangement = Arrangement.Bottom
+                        ) {
+                            Text(
+                                text = "Film Center",
+                                style = TextStyle(
+                                    fontSize = 42.sp,
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+
+                            Spacer(modifier = Modifier.height(24.dp))
+                            
+                            Text(
+                                text = "Watch trailer and choose your favorite film",
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.padding(top = 12.dp, bottom = 48.dp)
+                            )
+                        }
+
+                    }
 
                 }
 
