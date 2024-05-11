@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,10 +16,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
@@ -35,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -112,11 +116,11 @@ fun BottomBar(
                     Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.35f)
-                    ,
+                        .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     verticalArrangement = Arrangement.Bottom
                 ) {
 
-
+                    
 
                 }
 
@@ -154,7 +158,7 @@ fun BottomBar(
                 NavigationDrawerItem(
                     label = { Text(text = "Info") },
                     selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
+                    icon = { Icon(imageVector = Icons.Outlined.Info, contentDescription = null) },
                     onClick = {
                         scope.launch {
                             drawerState.apply {
@@ -167,7 +171,7 @@ fun BottomBar(
                 NavigationDrawerItem(
                     label = { Text(text = "FAQ") },
                     selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
+                    icon = { Icon(painter = painterResource(R.drawable.outline_question_mark_24), contentDescription = null) },
                     onClick = {
                         scope.launch {
                             drawerState.apply {
