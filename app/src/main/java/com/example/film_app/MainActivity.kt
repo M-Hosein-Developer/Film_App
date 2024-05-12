@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -189,7 +190,7 @@ fun BottomBar(
                 NavigationDrawerItem(
                     label = { Text(text = "Setting") },
                     selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.Info, contentDescription = null) },
+                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
                     onClick = {
                         navController.navigate(BottomNavItem.SettingScreen.rout)
                         scope.launch {
@@ -336,7 +337,7 @@ fun BottomBar(
                 }
 
                 composable(BottomNavItem.SettingScreen.rout) {
-                    SettingScreen()
+                    SettingScreen(navController)
                     isVisible = false
                 }
 
