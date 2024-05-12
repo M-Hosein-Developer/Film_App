@@ -3,8 +3,10 @@ package com.example.film_app.ui.feature
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -39,7 +41,15 @@ fun SettingScreen(navController: NavHostController) {
             navController.popBackStack()
         }
 
+        DynamicTheme(){}
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         Translator(){}
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+
 
     }
 
@@ -71,10 +81,53 @@ fun SettingToolbar(onBackPressed :() -> Unit){
 }
 
 @Composable
+fun DynamicTheme(onDynamicClicked : (Boolean) -> Unit){
+
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 18.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        Text(
+            text = "Dynamic Theme",
+            style = TextStyle(
+                fontSize = 18.sp
+            )
+        )
+
+        Switch(
+            checked = false,
+            onCheckedChange = {
+                onDynamicClicked.invoke(it)
+            },
+            thumbContent = {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(SwitchDefaults.IconSize),
+                )
+            },
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colorScheme.primary,
+                checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                uncheckedThumbColor = MaterialTheme.colorScheme.secondary,
+                uncheckedTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+            )
+        )
+
+    }
+
+}
+
+@Composable
 fun Translator(onTranslateClicked : (Boolean) -> Unit){
 
     Row(
-        Modifier.fillMaxWidth()
+        Modifier
+            .fillMaxWidth()
             .padding(horizontal = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
