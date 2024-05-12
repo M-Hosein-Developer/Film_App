@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.film_app.model.database.entities.AllDataEntity
+import com.example.film_app.model.database.entities.DynamicTheme
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
 import com.example.film_app.model.database.entities.TopRatedEntity
@@ -83,5 +84,12 @@ interface MyDao {
     @Query("DELETE FROM $WATCHLIST WHERE id = :id")
     suspend fun deleteWatchListBtId( id : Int)
 
+
+    //Dynamic Theme
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDynamicTheme(state : DynamicTheme)
+
+    @Query("SELECT * FROM DynamicTheme")
+    suspend fun getDynamicThemeState() : DynamicTheme
 
 }
