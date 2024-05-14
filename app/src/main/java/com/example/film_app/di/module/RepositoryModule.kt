@@ -6,6 +6,8 @@ import com.example.film_app.model.repository.homeRepo.HomeRepository
 import com.example.film_app.model.repository.homeRepo.HomeRepositoryImpl
 import com.example.film_app.model.repository.searchRepo.SearchRepository
 import com.example.film_app.model.repository.searchRepo.SearchRepositoryImpl
+import com.example.film_app.model.repository.themeRepo.ThemeRepository
+import com.example.film_app.model.repository.themeRepo.ThemeRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,6 +26,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun searchRepository(mainRepository: SearchRepositoryImpl) : SearchRepository
+
+    @Binds
+    abstract fun themeRepository(mainRepository: ThemeRepositoryImpl) : ThemeRepository
 
 
 }
