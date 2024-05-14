@@ -47,6 +47,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -62,12 +63,14 @@ import com.example.film_app.ui.feature.SettingScreen
 import com.example.film_app.ui.feature.SignInScreen
 import com.example.film_app.ui.feature.SignUpScreen
 import com.example.film_app.ui.feature.WatchListScreen
+import com.example.film_app.ui.state.settingState.DynamicThemeState
 import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.util.BottomNavItem
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 import com.example.film_app.viewModel.HomeViewModel
 import com.example.film_app.viewModel.RegisterViewModel
 import com.example.film_app.viewModel.SearchViewModel
+import com.example.film_app.viewModel.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -79,21 +82,36 @@ class MainActivity : ComponentActivity() {
     private val detailAndWatchListViewModel : DetailAndWatchListViewModel by viewModels()
     private val searchViewModel : SearchViewModel by viewModels()
     private val registerViewModel : RegisterViewModel by viewModels()
+    private val settingViewModel : SettingViewModel by viewModels()
     @Inject lateinit var sharedPref : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        var themeState by mutableStateOf(false)
+
+        lifecycleScope.launch {
+                settingViewModel.dynamicThemeState.collect {
+                    when (it) {
+                        is DynamicThemeState.Idle -> {}
+                        is DynamicThemeState.ThemeState -> {
+                            themeState = it.state
+                        }
+                    }
+
+            }
+        }
+
         setContent {
 
             val navController = rememberNavController()
 
-            AppTheme {
+            AppTheme(dynamicColor = themeState) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel , sharedPref)
+                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel , sharedPref , settingViewModel)
                 }
             }
         }
@@ -108,7 +126,8 @@ fun BottomBar(
     detailAndWatchListViewModel: DetailAndWatchListViewModel,
     searchViewModel: SearchViewModel,
     registerViewModel: RegisterViewModel,
-    sharedPref: SharedPreferences
+    sharedPref: SharedPreferences,
+    settingViewModel: SettingViewModel
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
@@ -337,7 +356,7 @@ fun BottomBar(
                 }
 
                 composable(BottomNavItem.SettingScreen.rout) {
-                    SettingScreen(navController)
+                    SettingScreen(navController , settingViewModel)
                     isVisible = false
                 }
 
