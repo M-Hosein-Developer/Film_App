@@ -4,6 +4,7 @@ import com.example.film_app.model.database.entities.DynamicTheme
 
 sealed class SettingIntent {
 
-    data class DynamicThemeIntent(val state : DynamicTheme) : SettingIntent()
+    data class SendDynamicThemeIntent(val state : DynamicTheme) : SettingIntent()
+    data object GetDynamicThemeIntent : SettingIntent()
 
 }
