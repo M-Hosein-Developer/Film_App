@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.film_app.model.database.entities.DynamicTheme
 import com.example.film_app.model.repository.themeRepo.ThemeRepository
 import com.example.film_app.ui.intent.SettingIntent
-import com.example.film_app.ui.state.settingState.DynamicThemeState
+import com.example.film_app.ui.state.settingState.GetDynamicThemeState
+import com.example.film_app.ui.state.settingState.SetDynamicThemeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -22,8 +23,13 @@ class SettingViewModel @Inject constructor(private val themeRepository: ThemeRep
     val dataIntent = Channel<SettingIntent>()
 
     //Dynamic Theme
-    private val _dynamicThemeState = MutableStateFlow<DynamicThemeState>(DynamicThemeState.Idle)
-    val dynamicThemeState: StateFlow<DynamicThemeState> get() = _dynamicThemeState
+    private val _setDynamicThemeState =
+        MutableStateFlow<SetDynamicThemeState>(SetDynamicThemeState.Idle)
+    val setDynamicThemeState: StateFlow<SetDynamicThemeState> get() = _setDynamicThemeState
+
+    private val _getDynamicThemeState =
+        MutableStateFlow<GetDynamicThemeState>(GetDynamicThemeState.Idle)
+    val getDynamicThemeState: StateFlow<GetDynamicThemeState> get() = _getDynamicThemeState
 
     init {
         handleIntent()
@@ -37,7 +43,8 @@ class SettingViewModel @Inject constructor(private val themeRepository: ThemeRep
 
                 when (it) {
 
-                    is SettingIntent.DynamicThemeIntent -> dynamicTheme(it.state)
+                    is SettingIntent.SendDynamicThemeIntent -> sendDynamicTheme(it.state)
+                    is SettingIntent.GetDynamicThemeIntent -> getDynamicTheme()
 
                 }
 
@@ -47,18 +54,18 @@ class SettingViewModel @Inject constructor(private val themeRepository: ThemeRep
 
     }
 
-    private fun dynamicTheme(state: DynamicTheme) = viewModelScope.launch {
-
-        themeRepository.insertDynamicThemeStateRep(state)
-
+    private fun getDynamicTheme() = viewModelScope.launch {
         while (true) {
-
-            _dynamicThemeState.value =
-                DynamicThemeState.ThemeState(themeRepository.getDynamicThemeState().dynamicThemeState)
-
+            _getDynamicThemeState.value =
+                GetDynamicThemeState.ThemeStateSet(themeRepository.getDynamicThemeState().dynamicThemeState)
             delay(1000)
         }
+    }
 
+
+    private fun sendDynamicTheme(state: DynamicTheme) = viewModelScope.launch {
+        themeRepository.insertDynamicThemeStateRep(state)
+        _setDynamicThemeState.value = SetDynamicThemeState.ThemeStateSet("ok")
     }
 
 
