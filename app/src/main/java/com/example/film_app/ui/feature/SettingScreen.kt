@@ -1,5 +1,6 @@
 package com.example.film_app.ui.feature
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,12 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -29,9 +36,45 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.film_app.model.database.entities.DynamicTheme
+import com.example.film_app.ui.intent.SettingIntent
+import com.example.film_app.ui.state.settingState.GetDynamicThemeState
+import com.example.film_app.ui.state.settingState.SetDynamicThemeState
+import com.example.film_app.viewModel.SettingViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun SettingScreen(navController: NavHostController) {
+fun SettingScreen(navController: NavHostController, viewModel: SettingViewModel) {
+
+    var dynamicThemeState by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        viewModel.dataIntent.send(SettingIntent.GetDynamicThemeIntent)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.setDynamicThemeState.collect{
+            when(it){
+                is SetDynamicThemeState.Idle -> {}
+                is SetDynamicThemeState.ThemeStateSet -> {
+                    Log.v("testDataTheme" , it.state)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getDynamicThemeState.collect{
+            when(it){
+                is GetDynamicThemeState.Idle -> {}
+                is GetDynamicThemeState.ThemeStateSet -> {
+                    dynamicThemeState = it.state
+                    Log.v("testDataTheme" , it.state.toString())
+                }
+            }
+        }
+    }
 
     Column(
         Modifier.fillMaxSize()
@@ -41,11 +84,16 @@ fun SettingScreen(navController: NavHostController) {
             navController.popBackStack()
         }
 
-        DynamicTheme(){}
+        DynamicThemeSetting(dynamicThemeState){
+            dynamicThemeState = it
+            scope.launch {
+                viewModel.dataIntent.send(SettingIntent.SendDynamicThemeIntent(DynamicTheme(1, dynamicThemeState)))
+            }
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Translator(){}
+        Translator {}
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -81,7 +129,7 @@ fun SettingToolbar(onBackPressed :() -> Unit){
 }
 
 @Composable
-fun DynamicTheme(onDynamicClicked : (Boolean) -> Unit){
+fun DynamicThemeSetting(dynamicThemeState : Boolean , onDynamicClicked : (Boolean) -> Unit){
 
     Row(
         Modifier
@@ -99,7 +147,7 @@ fun DynamicTheme(onDynamicClicked : (Boolean) -> Unit){
         )
 
         Switch(
-            checked = false,
+            checked = dynamicThemeState,
             onCheckedChange = {
                 onDynamicClicked.invoke(it)
             },
