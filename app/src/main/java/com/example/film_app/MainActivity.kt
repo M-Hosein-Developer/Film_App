@@ -3,6 +3,7 @@ package com.example.film_app
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -63,7 +64,8 @@ import com.example.film_app.ui.feature.SettingScreen
 import com.example.film_app.ui.feature.SignInScreen
 import com.example.film_app.ui.feature.SignUpScreen
 import com.example.film_app.ui.feature.WatchListScreen
-import com.example.film_app.ui.state.settingState.DynamicThemeState
+import com.example.film_app.ui.intent.SettingIntent
+import com.example.film_app.ui.state.settingState.GetDynamicThemeState
 import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.util.BottomNavItem
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
@@ -91,14 +93,15 @@ class MainActivity : ComponentActivity() {
         var themeState by mutableStateOf(false)
 
         lifecycleScope.launch {
-                settingViewModel.dynamicThemeState.collect {
-                    when (it) {
-                        is DynamicThemeState.Idle -> {}
-                        is DynamicThemeState.ThemeState -> {
-                            themeState = it.state
-                        }
+            settingViewModel.dataIntent.send(SettingIntent.GetDynamicThemeIntent)
+            settingViewModel.getDynamicThemeState.collect{
+                when(it){
+                    is GetDynamicThemeState.Idle -> {}
+                    is GetDynamicThemeState.ThemeStateSet -> {
+                        themeState = it.state
+                        Log.v("testDataTheme" , it.state.toString())
                     }
-
+                }
             }
         }
 
