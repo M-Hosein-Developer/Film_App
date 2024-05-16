@@ -9,7 +9,11 @@ class ThemeRepositoryImpl @Inject constructor(private val myDao: MyDao) : ThemeR
 
     override suspend fun insertDynamicThemeStateRep(state: DynamicTheme) = myDao.insertDynamicTheme(state)
 
-    override suspend fun getDynamicThemeState(): DynamicTheme = myDao.getDynamicThemeState()
+    override suspend fun getDynamicThemeState(): DynamicTheme =
+        if (myDao.getDynamicThemeState() != null)
+            myDao.getDynamicThemeState()
+        else
+            DynamicTheme(1, false)
 
 
 }
