@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
                     is GetDynamicThemeState.Idle -> {}
                     is GetDynamicThemeState.ThemeStateSet -> {
                         themeState = it.state
-                        Log.v("testDataTheme" , it.state.toString())
+                        Log.v("testDataTheme", it.state.toString())
                     }
                 }
             }

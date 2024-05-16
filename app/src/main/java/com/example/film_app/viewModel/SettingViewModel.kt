@@ -56,8 +56,7 @@ class SettingViewModel @Inject constructor(private val themeRepository: ThemeRep
 
     private fun getDynamicTheme() = viewModelScope.launch {
         while (true) {
-            _getDynamicThemeState.value =
-                GetDynamicThemeState.ThemeStateSet(themeRepository.getDynamicThemeState().dynamicThemeState)
+            _getDynamicThemeState.value = GetDynamicThemeState.ThemeStateSet(themeRepository.getDynamicThemeState().dynamicThemeState)
             delay(1000)
         }
     }
