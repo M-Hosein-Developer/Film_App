@@ -121,7 +121,7 @@ fun SearchToolbar(onBackCLicked: () -> Unit) {
 
     TopAppBar(
         title = { Text(
-            text = "Watch List",
+            text = "Search",
             Modifier
                 .fillMaxWidth()
                 .padding(end = 42.dp),
