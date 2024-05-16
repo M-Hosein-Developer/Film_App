@@ -1,7 +1,6 @@
 package com.example.film_app.viewModel
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.film_app.ui.intent.RegisterIntent
@@ -52,18 +51,13 @@ class RegisterViewModel @Inject constructor(private val sharedPrf : SharedPrefer
 
     private fun signInFire(username: String, password: String) {
 
-        val auth = Firebase.auth
+        Firebase.auth.signInWithEmailAndPassword(
+            username, password
+        ).addOnCompleteListener { task ->
 
-        auth.signInWithEmailAndPassword(
-            username,
-           password
-        )
-            .addOnCompleteListener(){ task ->
                 if (task.isSuccessful) {
 
-                    val editor = sharedPrf.edit()
-                    editor.putString("signIn", "successful")
-                    editor.apply()
+                    signInUp()
 
                     _signInState.value = SignInState.IsRegister("SignIn Successful")
 
@@ -77,27 +71,31 @@ class RegisterViewModel @Inject constructor(private val sharedPrf : SharedPrefer
 
     private fun signUpFire(username: String, password: String) {
 
-        val auth = Firebase.auth
-        auth.createUserWithEmailAndPassword(
+        Firebase.auth.createUserWithEmailAndPassword(
             username, password
-        ).addOnCompleteListener() { task ->
+        ).addOnCompleteListener { task ->
 
             if (task.isSuccessful) {
 
-                val editor = sharedPrf.edit()
-                editor.putString("signIn", "successful")
-                editor.apply()
+                signInUp()
 
                 _signUpState.value = SignUpState.IsRegister("Register Successful")
             } else {
-                Log.v("testFirebase" , task.toString())
+
                _signUpState.value = SignUpState.RegisterError("Register Not Successful")
             }
 
 
         }
+
     }
 
+    private fun signInUp() {
 
+        sharedPrf.edit()
+            .putString("signIn", "successful")
+            .apply()
+
+    }
 
 }
