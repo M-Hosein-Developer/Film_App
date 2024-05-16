@@ -59,6 +59,7 @@ import coil.compose.AsyncImage
 import com.example.film_app.ui.feature.DetailScreen
 import com.example.film_app.ui.feature.FirstRunScreen
 import com.example.film_app.ui.feature.HomeScreen
+import com.example.film_app.ui.feature.InfoScreen
 import com.example.film_app.ui.feature.SearchScreen
 import com.example.film_app.ui.feature.SettingScreen
 import com.example.film_app.ui.feature.SignInScreen
@@ -228,7 +229,7 @@ fun BottomBar(
                     selected = false,
                     icon = { Icon(imageVector = Icons.Outlined.Info, contentDescription = null) },
                     onClick = {
-                        navController.navigate(BottomNavItem.HomeScreen.rout)
+                        navController.navigate(BottomNavItem.InfoScreen.rout)
                         scope.launch {
                             drawerState.apply {
                                 if (isClosed) open() else close()
@@ -360,6 +361,11 @@ fun BottomBar(
 
                 composable(BottomNavItem.SettingScreen.rout) {
                     SettingScreen(navController , settingViewModel)
+                    isVisible = false
+                }
+
+                composable(BottomNavItem.InfoScreen.rout){
+                    InfoScreen(navController)
                     isVisible = false
                 }
 
