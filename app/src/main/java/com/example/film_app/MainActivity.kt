@@ -58,6 +58,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import com.example.film_app.ui.feature.DetailScreen
+import com.example.film_app.ui.feature.FilmCoverScreen
 import com.example.film_app.ui.feature.FirstRunScreen
 import com.example.film_app.ui.feature.HomeScreen
 import com.example.film_app.ui.feature.InfoScreen
@@ -230,8 +231,7 @@ fun BottomBar(
                             )
                         },
                         onClick = {
-
-
+                            navController.navigate(BottomNavItem.FilmCoverScreen.rout)
                             scope.launch {
                                 drawerState.apply {
                                     if (isClosed) open() else close()
@@ -424,6 +424,10 @@ fun BottomBar(
                     InfoScreen(navController)
                     isVisible = false
                     isVisibleDrawer = true
+                }
+
+                composable(BottomNavItem.FilmCoverScreen.rout){
+                    FilmCoverScreen(navController)
                 }
 
             }
