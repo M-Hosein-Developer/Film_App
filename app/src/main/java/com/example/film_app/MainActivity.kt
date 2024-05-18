@@ -428,6 +428,8 @@ fun BottomBar(
 
                 composable(BottomNavItem.FilmCoverScreen.rout){
                     FilmCoverScreen(navController)
+                    isVisible = false
+                    isVisibleDrawer = true
                 }
 
             }
