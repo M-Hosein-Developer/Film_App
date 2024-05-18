@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
@@ -43,7 +44,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -74,6 +74,8 @@ import com.example.film_app.viewModel.HomeViewModel
 import com.example.film_app.viewModel.RegisterViewModel
 import com.example.film_app.viewModel.SearchViewModel
 import com.example.film_app.viewModel.SettingViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -239,11 +241,13 @@ fun BottomBar(
                 )
 
                 NavigationDrawerItem(
-                    label = { Text(text = "FAQ") },
+                    label = { Text(text = "Log out") },
                     selected = false,
-                    icon = { Icon(painter = painterResource(R.drawable.outline_question_mark_24), contentDescription = null) },
+                    icon = { Icon(imageVector = Icons.Outlined.ExitToApp , contentDescription = null) },
                     onClick = {
-                        navController.navigate(BottomNavItem.HomeScreen.rout)
+                        sharedPref.edit().remove("signIn").apply()
+                        Firebase.auth.signOut()
+                        navController.navigate(BottomNavItem.FirstRunScreen.rout)
                         scope.launch {
                             drawerState.apply {
                                 if (isClosed) open() else close()
