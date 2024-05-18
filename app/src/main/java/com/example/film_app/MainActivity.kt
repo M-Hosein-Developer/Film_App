@@ -137,125 +137,148 @@ fun BottomBar(
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
+    var isVisibleDrawer by remember { mutableStateOf(true) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            if (isVisibleDrawer) {
+                ModalDrawerSheet {
 
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(290.dp)
-                        .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-
-                    Box(
+                    Column(
                         Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .height(290.dp)
+                            .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                        verticalArrangement = Arrangement.Bottom
                     ) {
 
-                        AsyncImage(
-                            model = R.drawable.popcorn,
-                            contentDescription = null,
-                            alignment = Alignment.Center,
-                            modifier = Modifier
-                                .matchParentSize()
-                                .size(200.dp)
-                                .blur(12.dp)
-                            )
-
-                        Column(
+                        Box(
                             Modifier
                                 .fillMaxSize()
-                                .padding(start = 18.dp),
-                            verticalArrangement = Arrangement.Bottom
                         ) {
-                            Text(
-                                text = "Film Center",
-                                style = TextStyle(
-                                    fontSize = 42.sp,
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                color = MaterialTheme.colorScheme.onPrimary
+
+                            AsyncImage(
+                                model = R.drawable.popcorn,
+                                contentDescription = null,
+                                alignment = Alignment.Center,
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .size(200.dp)
+                                    .blur(12.dp)
                             )
 
-                            Spacer(modifier = Modifier.height(24.dp))
-                            
-                            Text(
-                                text = "Watch trailer and choose your favorite film",
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.padding(top = 12.dp, bottom = 48.dp)
-                            )
+                            Column(
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(start = 18.dp),
+                                verticalArrangement = Arrangement.Bottom
+                            ) {
+                                Text(
+                                    text = "Film Center",
+                                    style = TextStyle(
+                                        fontSize = 42.sp,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+
+                                Spacer(modifier = Modifier.height(24.dp))
+
+                                Text(
+                                    text = "Watch trailer and choose your favorite film",
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier.padding(top = 12.dp, bottom = 48.dp)
+                                )
+                            }
+
                         }
 
                     }
+
+                    Divider()
+
+                    NavigationDrawerItem(
+                        label = { Text(text = "Home") },
+                        selected = false,
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Home,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = {
+                            navController.navigate(BottomNavItem.HomeScreen.rout)
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    )
+
+                    NavigationDrawerItem(
+                        label = { Text(text = "Setting") },
+                        selected = false,
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Settings,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = {
+                            navController.navigate(BottomNavItem.SettingScreen.rout)
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    )
+
+                    NavigationDrawerItem(
+                        label = { Text(text = "Info") },
+                        selected = false,
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = {
+                            navController.navigate(BottomNavItem.InfoScreen.rout)
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    )
+
+                    NavigationDrawerItem(
+                        label = { Text(text = "Log out") },
+                        selected = false,
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.ExitToApp,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = {
+                            sharedPref.edit().remove("signIn").apply()
+                            Firebase.auth.signOut()
+                            navController.navigate(BottomNavItem.FirstRunScreen.rout)
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    )
 
                 }
-
-                Divider()
-
-                NavigationDrawerItem(
-                    label = { Text(text = "Home") },
-                    selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.Home, contentDescription = null) },
-                    onClick = {
-                        navController.navigate(BottomNavItem.HomeScreen.rout)
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
-                            }
-                        }
-                    }
-                )
-
-                NavigationDrawerItem(
-                    label = { Text(text = "Setting") },
-                    selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.Settings, contentDescription = null) },
-                    onClick = {
-                        navController.navigate(BottomNavItem.SettingScreen.rout)
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
-                            }
-                        }
-                    }
-                )
-
-                NavigationDrawerItem(
-                    label = { Text(text = "Info") },
-                    selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.Info, contentDescription = null) },
-                    onClick = {
-                        navController.navigate(BottomNavItem.InfoScreen.rout)
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
-                            }
-                        }
-                    }
-                )
-
-                NavigationDrawerItem(
-                    label = { Text(text = "Log out") },
-                    selected = false,
-                    icon = { Icon(imageVector = Icons.Outlined.ExitToApp , contentDescription = null) },
-                    onClick = {
-                        sharedPref.edit().remove("signIn").apply()
-                        Firebase.auth.signOut()
-                        navController.navigate(BottomNavItem.FirstRunScreen.rout)
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
-                            }
-                        }
-                    }
-                )
-
             }
         }
     ) {
@@ -325,15 +348,18 @@ fun BottomBar(
                 composable(BottomNavItem.HomeScreen.rout) {
                     HomeScreen(homeViewModel, navController)
                     isVisible = true
+                    isVisibleDrawer = true
                 }
 
                 composable(BottomNavItem.SearchScreen.rout) {
                     SearchScreen(searchViewModel, navController)
                     isVisible = true
+                    isVisibleDrawer = true
                 }
                 composable(BottomNavItem.WatchListScreen.rout) {
                     WatchListScreen(detailAndWatchListViewModel, navController)
                     isVisible = true
+                    isVisibleDrawer = true
                 }
 
                 composable(
@@ -346,31 +372,37 @@ fun BottomBar(
                         it.arguments!!.getInt("DetailNav", -1)
                     )
                     isVisible = false
+                    isVisibleDrawer = true
                 }
 
                 composable(BottomNavItem.FirstRunScreen.rout) {
                     FirstRunScreen(navController)
                     isVisible = false
+                    isVisibleDrawer = false
                 }
 
                 composable(BottomNavItem.SignInScreen.rout) {
                     SignInScreen(navController, registerViewModel)
                     isVisible = false
+                    isVisibleDrawer = false
                 }
 
                 composable(BottomNavItem.SignUpScreen.rout) {
                     SignUpScreen(navController, registerViewModel)
                     isVisible = false
+                    isVisibleDrawer = false
                 }
 
                 composable(BottomNavItem.SettingScreen.rout) {
                     SettingScreen(navController , settingViewModel)
                     isVisible = false
+                    isVisibleDrawer = true
                 }
 
                 composable(BottomNavItem.InfoScreen.rout){
                     InfoScreen(navController)
                     isVisible = false
+                    isVisibleDrawer = true
                 }
 
             }
