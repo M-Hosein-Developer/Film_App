@@ -1,5 +1,6 @@
 package com.example.film_app.ui.feature
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,7 +26,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
@@ -47,6 +51,9 @@ fun FilmCoverScreen(navController: NavHostController, viewModel: FilmCoverViewMo
 
     var filmCover by remember { mutableStateOf(listOf(EMPTY_DATA)) }
 
+    var filmUrl by remember { mutableStateOf("") }
+    var filmStateUrl by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         viewModel.dataIntent.send(FilmCoverIntent.FetchFilmCover)
 
@@ -68,7 +75,16 @@ fun FilmCoverScreen(navController: NavHostController, viewModel: FilmCoverViewMo
 
         FilmCoverToolbar { navController.popBackStack() }
 
-        FilmCover(filmCover)
+        if (filmStateUrl){
+            FilmCoverClicked(filmCover , filmUrl){
+                filmStateUrl = false
+            }
+        }else{
+            FilmCover(filmCover) {
+                filmUrl = it
+                filmStateUrl = true
+            }
+        }
 
     }
 
@@ -102,8 +118,7 @@ fun FilmCoverToolbar(onBackCLicked: () -> Unit) {
 }
 
 @Composable
-fun FilmCover(filmCover: List<AllDataEntity>) {
-
+fun FilmCover(filmCover: List<AllDataEntity>, onCoverLicked: (String) -> Unit) {
 
 
     LazyVerticalStaggeredGrid(
@@ -117,17 +132,68 @@ fun FilmCover(filmCover: List<AllDataEntity>) {
         items(filmCover.size){
 
             if (filmCover.size > 1)
-            FilmCoverItem(Random.nextInt(200 ,370).dp , filmCover[it])
+                FilmCoverItem(
+                    Random.nextInt(200, 370).dp,
+                    filmCover[it]
+                ) { onCoverLicked.invoke(it) }
 
         }
 
     }
 
+}
+
+@Composable
+fun FilmCoverClicked(filmCover: List<AllDataEntity>, filmUrl: String , closeCoverClicked :() -> Unit) {
+
+    Box(Modifier.fillMaxSize()){
+
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize().blur(12.dp),
+            contentPadding = PaddingValues(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalItemSpacing = 16.dp
+        ) {
+
+            items(filmCover.size){
+
+                if (filmCover.size > 1)
+                    FilmCoverItem(
+                        Random.nextInt(200, 370).dp,
+                        filmCover[it]
+                    ) { }
+
+            }
+
+        }
+
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp)
+                .clickable { closeCoverClicked.invoke() },
+            contentAlignment = Alignment.Center
+        ){
+
+            AsyncImage(
+                model = filmUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    .clip(RoundedCornerShape(14.dp)),
+                alignment = Alignment.Center
+            )
+
+        }
+
+    }
 
 }
 
 @Composable
-fun FilmCoverItem(height: Dp, filmCover: AllDataEntity){
+fun FilmCoverItem(height: Dp, filmCover: AllDataEntity, onCoverLicked: (String) -> Unit) {
 
 
     Box(
@@ -135,6 +201,7 @@ fun FilmCoverItem(height: Dp, filmCover: AllDataEntity){
             .fillMaxWidth()
             .height(height)
             .clip(RoundedCornerShape(10.dp))
+            .clickable { onCoverLicked.invoke("https://image.tmdb.org/t/p/w500" + filmCover.posterPath) }
     ){
 
         AsyncImage(
@@ -145,6 +212,6 @@ fun FilmCoverItem(height: Dp, filmCover: AllDataEntity){
         )
 
     }
-   
+
 
 }
