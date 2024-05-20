@@ -72,6 +72,7 @@ import com.example.film_app.ui.state.settingState.GetDynamicThemeState
 import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.util.BottomNavItem
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
+import com.example.film_app.viewModel.FilmCoverViewModel
 import com.example.film_app.viewModel.HomeViewModel
 import com.example.film_app.viewModel.RegisterViewModel
 import com.example.film_app.viewModel.SearchViewModel
@@ -90,6 +91,7 @@ class MainActivity : ComponentActivity() {
     private val searchViewModel : SearchViewModel by viewModels()
     private val registerViewModel : RegisterViewModel by viewModels()
     private val settingViewModel : SettingViewModel by viewModels()
+    private val filmCoverViewModel : FilmCoverViewModel by viewModels()
     @Inject lateinit var sharedPref : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,7 +121,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel , sharedPref , settingViewModel)
+                    BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel , sharedPref , settingViewModel , filmCoverViewModel)
                 }
             }
         }
@@ -135,7 +137,8 @@ fun BottomBar(
     searchViewModel: SearchViewModel,
     registerViewModel: RegisterViewModel,
     sharedPref: SharedPreferences,
-    settingViewModel: SettingViewModel
+    settingViewModel: SettingViewModel,
+    filmCoverViewModel: FilmCoverViewModel
 ) {
 
     var isVisible by remember { mutableStateOf(true) }
@@ -427,7 +430,7 @@ fun BottomBar(
                 }
 
                 composable(BottomNavItem.FilmCoverScreen.rout){
-                    FilmCoverScreen(navController)
+                    FilmCoverScreen(navController , filmCoverViewModel)
                     isVisible = false
                     isVisibleDrawer = true
                 }
