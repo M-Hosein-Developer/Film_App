@@ -1,8 +1,8 @@
 package com.example.film_app.model.repository.detailRepo
 
+import com.example.film_app.model.dataClass.TrailerResponse
 import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.WatchListEntity
-import com.example.movies.model.apiService.TrailerResponse
 import kotlinx.coroutines.flow.Flow
 
 interface DetailAndWatchListRepository {

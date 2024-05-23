@@ -56,11 +56,11 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository) 
 
                 when (it) {
 
-                    is HomeIntent.fetchNowPlaying -> getNowPlayingData()
-                    is HomeIntent.fetchPopular -> getPopularData()
-                    is HomeIntent.fetchTopRate -> getTopRateData()
-                    is HomeIntent.fetchUpcoming -> getUpcomingData()
-                    is HomeIntent.fetchTrend -> getTrendData()
+                    is HomeIntent.FetchNowPlaying -> getNowPlayingData()
+                    is HomeIntent.FetchPopular -> getPopularData()
+                    is HomeIntent.FetchTopRate -> getTopRateData()
+                    is HomeIntent.FetchUpcoming -> getUpcomingData()
+                    is HomeIntent.FetchTrend -> getTrendData()
 
                 }
 

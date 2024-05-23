@@ -2,10 +2,10 @@ package com.example.film_app.ui.intent
 
 sealed class HomeIntent {
 
-    data object fetchNowPlaying : HomeIntent()
-    data object fetchPopular : HomeIntent()
-    data object fetchTopRate : HomeIntent()
-    data object fetchUpcoming : HomeIntent()
-    data object fetchTrend : HomeIntent()
+    data object FetchNowPlaying : HomeIntent()
+    data object FetchPopular : HomeIntent()
+    data object FetchTopRate : HomeIntent()
+    data object FetchUpcoming : HomeIntent()
+    data object FetchTrend : HomeIntent()
 
 }

@@ -18,12 +18,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -203,7 +203,7 @@ fun BottomBar(
 
                     }
 
-                    Divider()
+                    HorizontalDivider()
 
                     NavigationDrawerItem(
                         label = { Text(text = "Home") },
@@ -286,7 +286,7 @@ fun BottomBar(
                         selected = false,
                         icon = {
                             Icon(
-                                imageVector = Icons.Outlined.ExitToApp,
+                                imageVector = Icons.AutoMirrored.Outlined.ExitToApp,
                                 contentDescription = null
                             )
                         },

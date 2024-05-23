@@ -1,6 +1,7 @@
 package com.example.film_app.util
 
 import com.example.film_app.model.dataClass.ResponseMovies
+import com.example.film_app.model.dataClass.TrailerResponse
 import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.NowPlayingEntity
 import com.example.film_app.model.database.entities.PopularEntity
@@ -8,7 +9,6 @@ import com.example.film_app.model.database.entities.TopRatedEntity
 import com.example.film_app.model.database.entities.TrendEntity
 import com.example.film_app.model.database.entities.UpcomingEntity
 import com.example.film_app.model.database.entities.WatchListEntity
-import com.example.movies.model.apiService.TrailerResponse
 
 fun getAllNowPlay(response : ResponseMovies): List<NowPlayingEntity> {
 

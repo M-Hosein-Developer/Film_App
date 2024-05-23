@@ -16,9 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -117,7 +117,7 @@ fun WatchListToolbar(onBackCLicked: () -> Unit) {
         ) },
         navigationIcon = {
             IconButton(onClick = { onBackCLicked.invoke() }) {
-                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = null)
+                Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = null)
             }
         },
         modifier = Modifier.fillMaxWidth()
@@ -133,7 +133,7 @@ fun WatchListLazy(watchList: List<WatchListEntity>, onItemClick: (Int) -> Unit) 
             .padding(bottom = 70.dp)
     ) {
 
-        items(watchList.size) {
+        items(watchList.size) { it ->
             WatchListLazyItem(watchList[it]) { onItemClick.invoke(it) }
         }
 

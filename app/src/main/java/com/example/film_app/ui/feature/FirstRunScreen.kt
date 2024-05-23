@@ -3,7 +3,6 @@ package com.example.film_app.ui.feature
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,12 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
-import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -93,7 +91,7 @@ fun FirstRunScreen(navController: NavHostController) {
                     fontWeight = FontWeight.Bold
                 )
             )
-            Icon(imageVector = Icons.Default.KeyboardArrowRight , contentDescription = null)
+            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
         }
 
 
@@ -147,9 +145,6 @@ fun CustomSlider(
                 contentPadding = pagerPaddingValues,
                 beyondBoundsPageCount = 0,
                 pageSize = PageSize.Fill,
-                pageNestedScrollConnection = PagerDefaults.pageNestedScrollConnection(
-                    Orientation.Horizontal
-                ),
                 pageContent = {
 
                     val pageOffset =

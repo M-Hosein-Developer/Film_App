@@ -2,7 +2,7 @@ package com.example.film_app.model.apiService
 
 import com.example.film_app.model.dataClass.ResponseMovies
 import com.example.film_app.util.API_KEY
-import com.example.movies.model.apiService.TrailerResponse
+import com.example.film_app.model.dataClass.TrailerResponse
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path

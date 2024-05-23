@@ -15,9 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -133,7 +133,7 @@ fun SearchToolbar(onBackCLicked: () -> Unit) {
         ) },
         navigationIcon = {
             IconButton(onClick = { onBackCLicked.invoke() }) {
-                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = null)
+                Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = null)
             }
         },
         modifier = Modifier.fillMaxWidth()

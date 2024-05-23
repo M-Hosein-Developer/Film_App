@@ -14,7 +14,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -106,10 +106,13 @@ fun FilmCoverToolbar(onBackCLicked: () -> Unit) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
-        ) },
+        ) }
+
+
+        ,
         navigationIcon = {
             IconButton(onClick = { onBackCLicked.invoke() }) {
-                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = null)
+                Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = null)
             }
         },
         modifier = Modifier.fillMaxWidth()
@@ -129,7 +132,7 @@ fun FilmCover(filmCover: List<AllDataEntity>, onCoverLicked: (String) -> Unit) {
         verticalItemSpacing = 16.dp
         ) {
 
-        items(filmCover.size){
+        items(filmCover.size){ it ->
 
             if (filmCover.size > 1)
                 FilmCoverItem(

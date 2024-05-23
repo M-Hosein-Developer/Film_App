@@ -1,4 +1,4 @@
-package com.example.movies.model.apiService
+package com.example.film_app.model.dataClass
 
 data class TrailerResponse(
     val id: Int,

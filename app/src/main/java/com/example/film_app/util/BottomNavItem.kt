@@ -9,14 +9,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomNavItem(val rout : String , val icon : ImageVector , val label : String) {
 
-    object HomeScreen : BottomNavItem("HomeScreen", Icons.Outlined.Home, "Home")
-    object SearchScreen : BottomNavItem("SearchScreen", Icons.Outlined.Search, "Search")
-    object WatchListScreen : BottomNavItem("WatchListScreen", Icons.Outlined.FavoriteBorder, "Watch List")
-    object DetailScreen : BottomNavItem("DetailScreen", Icons.Outlined.FavoriteBorder, "Detail")
-    object FirstRunScreen : BottomNavItem("FirstRunScreen", Icons.Outlined.Add, "Intro")
-    object SignInScreen : BottomNavItem("SignInScreen", Icons.Outlined.Add, "SignIn")
-    object SignUpScreen : BottomNavItem("SignUpScreen", Icons.Outlined.Add, "SignUp")
-    object SettingScreen : BottomNavItem("SettingScreen", Icons.Outlined.Add, "Setting")
-    object InfoScreen : BottomNavItem("InfoScreen", Icons.Outlined.Add, "Info")
-    object FilmCoverScreen : BottomNavItem("FilmCoverScreen", Icons.Outlined.Add, "FilmCoverInfo")
+    data object HomeScreen : BottomNavItem("HomeScreen", Icons.Outlined.Home, "Home")
+    data object SearchScreen : BottomNavItem("SearchScreen", Icons.Outlined.Search, "Search")
+    data object WatchListScreen : BottomNavItem("WatchListScreen", Icons.Outlined.FavoriteBorder, "Watch List")
+    data object DetailScreen : BottomNavItem("DetailScreen", Icons.Outlined.FavoriteBorder, "Detail")
+    data object FirstRunScreen : BottomNavItem("FirstRunScreen", Icons.Outlined.Add, "Intro")
+    data object SignInScreen : BottomNavItem("SignInScreen", Icons.Outlined.Add, "SignIn")
+    data object SignUpScreen : BottomNavItem("SignUpScreen", Icons.Outlined.Add, "SignUp")
+    data object SettingScreen : BottomNavItem("SettingScreen", Icons.Outlined.Add, "Setting")
+    data object InfoScreen : BottomNavItem("InfoScreen", Icons.Outlined.Add, "Info")
+    data object FilmCoverScreen : BottomNavItem("FilmCoverScreen", Icons.Outlined.Add, "FilmCoverInfo")
 }

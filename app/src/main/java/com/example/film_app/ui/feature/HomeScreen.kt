@@ -66,7 +66,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
     val trend = remember { mutableStateOf(listOf<TrendEntity>()) }
 
     LaunchedEffect(viewModel.nowPlayingState) {
-        viewModel.dataIntent.send(HomeIntent.fetchNowPlaying)
+        viewModel.dataIntent.send(HomeIntent.FetchNowPlaying)
 
         viewModel.nowPlayingState.collect{
 
@@ -83,7 +83,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
         }
     }
     LaunchedEffect(viewModel.popularState) {
-        viewModel.dataIntent.send(HomeIntent.fetchPopular)
+        viewModel.dataIntent.send(HomeIntent.FetchPopular)
 
         viewModel.popularState.collect{
 
@@ -101,7 +101,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
 
     }
     LaunchedEffect(viewModel.topRateState) {
-        viewModel.dataIntent.send(HomeIntent.fetchTopRate)
+        viewModel.dataIntent.send(HomeIntent.FetchTopRate)
 
         viewModel.topRateState.collect{
 
@@ -120,7 +120,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
 
     }
     LaunchedEffect(viewModel.upcomingState) {
-        viewModel.dataIntent.send(HomeIntent.fetchUpcoming)
+        viewModel.dataIntent.send(HomeIntent.FetchUpcoming)
 
         viewModel.upcomingState.collect{
 
@@ -139,7 +139,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController){
 
     }
     LaunchedEffect(viewModel.trendState) {
-        viewModel.dataIntent.send(HomeIntent.fetchTrend)
+        viewModel.dataIntent.send(HomeIntent.FetchTrend)
 
         viewModel.trendState.collect{
 
@@ -202,7 +202,7 @@ fun Trend(trendList: List<TrendEntity> , onItemTrendClick :(Int) -> Unit) {
             Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp)
         ) {
 
-            items(trendList.size) {
+            items(trendList.size) { it ->
 
                 TrendItem(trendList[it]) { onItemTrendClick.invoke(it) }
             }
@@ -339,7 +339,7 @@ fun FilmCategoryNowPlaying(nowPlaying: List<NowPlayingEntity> , onItemNowPlaying
         Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
     ) {
 
-        items(nowPlaying.size) {
+        items(nowPlaying.size) { it ->
             FilmCategoryNowPlayingItem(nowPlaying[it]){ onItemNowPlayingClick.invoke(it) }
         }
 
@@ -379,7 +379,7 @@ fun FilmCategoryPopular(popular: List<PopularEntity> , onItemPopularClick :(Int)
         Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
     ) {
 
-        items(popular.size) {
+        items(popular.size) { it ->
             FilmCategoryTopRateItem(popular[it]){ onItemPopularClick.invoke(it) }
         }
 
@@ -419,7 +419,7 @@ fun FilmCategoryTopRate(topRate: List<TopRatedEntity> , onItemTopRateClick :(Int
         Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
     ) {
 
-        items(topRate.size) {
+        items(topRate.size) { it ->
             FilmCategoryTopRateItem(topRate[it]){ onItemTopRateClick.invoke(it) }
         }
 
@@ -459,7 +459,7 @@ fun FilmCategoryUpcoming(upcoming: List<UpcomingEntity> , onItemUpcomingClick :(
         Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 82.dp)
     ) {
 
-        items(upcoming.size) {
+        items(upcoming.size) { it ->
             FilmCategoryTopRateItem(upcoming[it]){ onItemUpcomingClick.invoke(it) }
         }
 

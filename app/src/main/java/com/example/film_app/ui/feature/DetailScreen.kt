@@ -15,15 +15,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.film_app.model.dataClass.TrailerResponse
 import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.WatchListEntity
 import com.example.film_app.ui.intent.DetailAndWatchListIntent
@@ -62,7 +63,6 @@ import com.example.film_app.util.EMPTY_DATA
 import com.example.film_app.util.EMPTY_DATA1
 import com.example.film_app.util.TRAILER_EMPTY_DATA
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
-import com.example.movies.model.apiService.TrailerResponse
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -214,7 +214,7 @@ fun DetailToolbar(
         ) },
         navigationIcon = {
             IconButton(onClick = { onBackCLicked.invoke() }) {
-                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = null)
+                Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = null)
             }
         },
         actions = {
@@ -284,7 +284,7 @@ fun DetailToolbar(
 }
 
 @Composable
-fun DetailInfo(detailData: AllDataEntity, trailerData: List<TrailerResponse.MoviesResult> , onTrailerClick: (Int) -> Unit) {
+fun DetailInfo(detailData: AllDataEntity, trailerData: List<TrailerResponse.MoviesResult>, onTrailerClick: (Int) -> Unit) {
 
     Column(
         Modifier
@@ -383,7 +383,7 @@ fun DescriptionFilm(detailData: AllDataEntity) {
             )
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .fillMaxHeight()  //fill the max height
                 .width(1.dp)
@@ -410,7 +410,7 @@ fun DescriptionFilm(detailData: AllDataEntity) {
             )
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .fillMaxHeight()  //fill the max height
                 .width(1.dp)

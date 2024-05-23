@@ -1,6 +1,6 @@
 package com.example.film_app.ui.state.detailState
 
-import com.example.movies.model.apiService.TrailerResponse
+import com.example.film_app.model.dataClass.TrailerResponse
 
 sealed class TrailerState {
 

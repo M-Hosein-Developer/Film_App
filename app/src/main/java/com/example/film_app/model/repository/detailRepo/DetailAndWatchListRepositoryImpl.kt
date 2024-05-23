@@ -2,10 +2,10 @@ package com.example.film_app.model.repository.detailRepo
 
 import android.util.Log
 import com.example.film_app.model.apiService.ApiService
+import com.example.film_app.model.dataClass.TrailerResponse
 import com.example.film_app.model.database.MyDao
 import com.example.film_app.model.database.entities.AllDataEntity
 import com.example.film_app.model.database.entities.WatchListEntity
-import com.example.movies.model.apiService.TrailerResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +22,7 @@ class DetailAndWatchListRepositoryImpl @Inject constructor(private val myDao: My
         }
     }.flowOn(Dispatchers.IO)
 
-    override val watchList: Flow<List<WatchListEntity>> = flow<List<WatchListEntity>> {
+    override val watchList: Flow<List<WatchListEntity>> = flow {
         while (true){
             emit(myDao.getAllWatchList())
             Log.v("VMData1" , myDao.getAllWatchList().toString())

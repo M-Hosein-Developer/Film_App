@@ -57,7 +57,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
     }.flowOn(Dispatchers.IO)
 
     //Upcoming
-    override val upcoming: Flow<List<UpcomingEntity>> = flow<List<UpcomingEntity>> {
+    override val upcoming: Flow<List<UpcomingEntity>> = flow {
         while (true){
             val response = apiService.getAllUpcoming()
             emit(getAllUpcoming(response))
@@ -68,7 +68,7 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
     }.flowOn(Dispatchers.IO)
 
     //Trend
-    override val trend: Flow<List<TrendEntity>> = flow<List<TrendEntity>> {
+    override val trend: Flow<List<TrendEntity>> = flow {
         while (true){
             val response = apiService.getAllTrend()
             emit(getAllTrend(response))
