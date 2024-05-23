@@ -11,12 +11,16 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SharedPrefModule {
+object UtilModule {
 
     @Singleton
     @Provides
     fun provideSharedPref(@ApplicationContext context : Context) : SharedPreferences =
         context.getSharedPreferences("Successful SignIn", Context.MODE_PRIVATE)
 
+
+    @Singleton
+    @Provides
+    fun provideContext(@ApplicationContext context: Context) : Context = context
 
 }
