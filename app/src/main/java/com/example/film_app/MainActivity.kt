@@ -7,6 +7,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,10 +38,15 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,6 +82,7 @@ import com.example.film_app.ui.intent.SettingIntent
 import com.example.film_app.ui.state.settingState.GetDynamicThemeState
 import com.example.film_app.ui.theme.AppTheme
 import com.example.film_app.util.BottomNavItem
+import com.example.film_app.util.NetworkChecker
 import com.example.film_app.viewModel.DetailAndWatchListViewModel
 import com.example.film_app.viewModel.FilmCoverViewModel
 import com.example.film_app.viewModel.HomeViewModel
@@ -122,10 +134,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     BottomBar(navController , homeViewModel , detailAndWatchListViewModel , searchViewModel , registerViewModel , sharedPref , settingViewModel , filmCoverViewModel)
+                    if (!NetworkChecker(this).internetConnection) SnackBarNetwork()
                 }
             }
+
+
         }
+
+
     }
+
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -443,5 +461,50 @@ fun BottomBar(
 
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
+@Composable
+fun SnackBarNetwork() {
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    var isVisible by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Bottom,
+    ) {
+        AnimatedVisibility(
+            visible = isVisible,
+            enter = slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween(durationMillis = 1000, easing = LinearOutSlowInEasing)
+            ),
+            exit = slideOutVertically(
+                targetOffsetY = { it },
+                animationSpec = tween(durationMillis = 1000, easing = FastOutLinearInEasing)
+            )
+        ) {
+            SnackbarHost(hostState = snackbarHostState)
+        }
+
+        LaunchedEffect(Unit) {
+            isVisible = true
+            val result = snackbarHostState.showSnackbar(
+                message = "Please Check Internet Connection",
+                actionLabel = "Ok",
+                duration = SnackbarDuration.Indefinite
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {
+
+                }
+                SnackbarResult.Dismissed -> {
+
+                }
+            }
+            isVisible = false
+        }
+    }
+
+}
 
 
