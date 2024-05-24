@@ -58,6 +58,11 @@ fun SignInScreen(navController: NavHostController, registerViewModel: RegisterVi
                 is SignInState.Idle -> {}
                 is SignInState.IsRegister -> {
                     Toast.makeText(context, it.success, Toast.LENGTH_SHORT).show()
+                    navController.navigate(BottomNavItem.HomeScreen.rout) {
+                        popUpTo(BottomNavItem.SignInScreen.rout) {
+                            inclusive = true
+                        }
+                    }
                 }
                 is SignInState.RegisterError -> {
                     Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
@@ -90,13 +95,6 @@ fun SignInScreen(navController: NavHostController, registerViewModel: RegisterVi
                     scope.launch {
                         registerViewModel.dataIntent.send(RegisterIntent.SignIn(username, password))
                     }
-                    navController.navigate(BottomNavItem.HomeScreen.rout) {
-                        popUpTo(BottomNavItem.SignInScreen.rout) {
-                            inclusive = true
-                        }
-                    }
-
-                    Toast.makeText(context, "SignIn Successful", Toast.LENGTH_SHORT).show()
 
                 }else{
                     Toast.makeText(

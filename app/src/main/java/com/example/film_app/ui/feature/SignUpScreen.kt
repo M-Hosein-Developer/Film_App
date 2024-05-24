@@ -59,6 +59,11 @@ fun SignUpScreen(navController: NavHostController, viewModel: RegisterViewModel)
                 is SignUpState.Idle -> {}
                 is SignUpState.IsRegister -> {
                     Toast.makeText(context, it.success, Toast.LENGTH_SHORT).show()
+                    navController.navigate(BottomNavItem.HomeScreen.rout) {
+                        popUpTo(BottomNavItem.SignUpScreen.rout) {
+                            inclusive = true
+                        }
+                    }
                 }
 
                 is SignUpState.RegisterError -> {
@@ -98,12 +103,6 @@ fun SignUpScreen(navController: NavHostController, viewModel: RegisterViewModel)
                     scope.launch {
                         viewModel.dataIntent.send(RegisterIntent.SignUp(username, password))
                     }
-                    navController.navigate(BottomNavItem.HomeScreen.rout) {
-                        popUpTo(BottomNavItem.SignUpScreen.rout) {
-                            inclusive = true
-                        }
-                    }
-                    Toast.makeText(context, "Register Successful", Toast.LENGTH_SHORT).show()
 
                 } else {
                     Toast.makeText(
