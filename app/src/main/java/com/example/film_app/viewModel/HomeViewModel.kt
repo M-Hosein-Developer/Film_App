@@ -11,6 +11,7 @@ import com.example.film_app.ui.state.homeState.PopularState
 import com.example.film_app.ui.state.homeState.TopRateState
 import com.example.film_app.ui.state.homeState.TrendState
 import com.example.film_app.ui.state.homeState.UpcomingState
+import com.example.film_app.util.NetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: HomeRepository, @ApplicationContext val context : Context,) : ViewModel() {
+class HomeViewModel @Inject constructor(private val repository: HomeRepository, @ApplicationContext val context : Context) : ViewModel() {
 
     val dataIntent = Channel<HomeIntent>()
 
@@ -76,14 +77,31 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository, 
 
     //Now Playing
     private fun getNowPlayingData() {
+
         _nowPlayingState.value = NowPlayingState.Loading
-        viewModelScope.launch {
-            repository.nowPlaying.catch {
-                _nowPlayingState.value = NowPlayingState.NowPlayingError(it.localizedMessage)
-            }.collect {
-                _nowPlayingState.value = NowPlayingState.NowPlayingData(it)
+
+        if (NetworkChecker(context).internetConnection) {
+
+            viewModelScope.launch {
+                repository.nowPlaying.catch {
+                    _nowPlayingState.value = NowPlayingState.NowPlayingError(it.localizedMessage)
+                }.collect {
+                    _nowPlayingState.value = NowPlayingState.NowPlayingData(it)
+                }
             }
+
+        }else{
+
+            viewModelScope.launch {
+                repository.nowPlayingByDb.catch {
+                    _nowPlayingState.value = NowPlayingState.NowPlayingError(it.localizedMessage)
+                }.collect {
+                    _nowPlayingState.value = NowPlayingState.NowPlayingData(it)
+                }
+            }
+
         }
+
 
     }
 
@@ -91,26 +109,55 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository, 
     private fun getPopularData() {
 
         _popularState.value = PopularState.Loading
-        viewModelScope.launch {
-            repository.popular.catch {
-                _popularState.value = PopularState.PopularError(it.localizedMessage)
-            }.collect {
-                _popularState.value = PopularState.PopularData(it)
-            }
-        }
 
+        if (NetworkChecker(context).internetConnection) {
+
+            viewModelScope.launch {
+                repository.popular.catch {
+                    _popularState.value = PopularState.PopularError(it.localizedMessage)
+                }.collect {
+                    _popularState.value = PopularState.PopularData(it)
+                }
+            }
+
+        }else{
+
+            viewModelScope.launch {
+                repository.popularByDb.catch {
+                    _popularState.value = PopularState.PopularError(it.localizedMessage)
+                }.collect {
+                    _popularState.value = PopularState.PopularData(it)
+                }
+            }
+
+        }
     }
 
     //Top Rate
     private fun getTopRateData() {
 
         _topRateState.value = TopRateState.Idle
-        viewModelScope.launch {
-            repository.topRate.catch {
-                _topRateState.value = TopRateState.TopRateError(it.localizedMessage)
-            }.collect{
-                _topRateState.value = TopRateState.TopRateData(it)
+
+        if (NetworkChecker(context).internetConnection) {
+
+            viewModelScope.launch {
+                repository.topRate.catch {
+                    _topRateState.value = TopRateState.TopRateError(it.localizedMessage)
+                }.collect{
+                    _topRateState.value = TopRateState.TopRateData(it)
+                }
             }
+
+        }else{
+
+            viewModelScope.launch {
+                repository.topRateByDb.catch {
+                    _topRateState.value = TopRateState.TopRateError(it.localizedMessage)
+                }.collect{
+                    _topRateState.value = TopRateState.TopRateData(it)
+                }
+            }
+
         }
 
     }
@@ -119,12 +166,27 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository, 
     private fun getUpcomingData() {
 
         _upcomingState.value = UpcomingState.Loading
-        viewModelScope.launch {
-            repository.upcoming.catch {
-                _upcomingState.value = UpcomingState.UpcomingError(it.localizedMessage)
-            }.collect{
-                _upcomingState.value = UpcomingState.UpcomingData(it)
+
+        if (NetworkChecker(context).internetConnection) {
+
+            viewModelScope.launch {
+                repository.upcoming.catch {
+                    _upcomingState.value = UpcomingState.UpcomingError(it.localizedMessage)
+                }.collect{
+                    _upcomingState.value = UpcomingState.UpcomingData(it)
+                }
             }
+
+        }else{
+
+            viewModelScope.launch {
+                repository.upcomingByDb.catch {
+                    _upcomingState.value = UpcomingState.UpcomingError(it.localizedMessage)
+                }.collect{
+                    _upcomingState.value = UpcomingState.UpcomingData(it)
+                }
+            }
+
         }
 
     }
@@ -133,15 +195,29 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository, 
     private fun getTrendData() {
 
         _trendState.value = TrendState.Loading
-        viewModelScope.launch {
-            repository.trend.catch {
-                _trendState.value = TrendState.TrendError(it.localizedMessage)
-            }.collect{
-                _trendState.value = TrendState.TrendData(it)
+
+        if (NetworkChecker(context).internetConnection) {
+
+            viewModelScope.launch {
+                repository.trend.catch {
+                    _trendState.value = TrendState.TrendError(it.localizedMessage)
+                }.collect{
+                    _trendState.value = TrendState.TrendData(it)
+                }
             }
+
+        }else{
+
+            viewModelScope.launch {
+                repository.trendByDb.catch {
+                    _trendState.value = TrendState.TrendError(it.localizedMessage)
+                }.collect{
+                    _trendState.value = TrendState.TrendData(it)
+                }
+            }
+
         }
 
     }
-
 
 }
