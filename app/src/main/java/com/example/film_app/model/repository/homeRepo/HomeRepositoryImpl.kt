@@ -20,8 +20,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService, private val myDao: MyDao) :
-    HomeRepository {
+class HomeRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val myDao: MyDao,
+) : HomeRepository {
 
     //Now Playing
     override val nowPlaying: Flow<List<NowPlayingEntity>> = flow {
@@ -34,6 +36,15 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
         }
     }.flowOn(Dispatchers.IO)
 
+
+    override val nowPlayingByDb: Flow<List<NowPlayingEntity>> = flow<List<NowPlayingEntity>> {
+        while (true){
+            emit(myDao.getAllNowPlayingData())
+            delay(20000)
+        }
+    }.flowOn(Dispatchers.IO)
+
+
     //Popular
     override val popular: Flow<List<PopularEntity>> = flow {
         while (true){
@@ -42,6 +53,13 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             myDao.insertAllPopularData(getAllPopular(response))
             myDao.insertAllData(getAllData(response))
             delay(21000)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override val popularByDb: Flow<List<PopularEntity>> = flow {
+        while (true){
+            emit(myDao.getAllPopularData())
+            delay(20000)
         }
     }.flowOn(Dispatchers.IO)
 
@@ -56,6 +74,13 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
         }
     }.flowOn(Dispatchers.IO)
 
+    override val topRateByDb: Flow<List<TopRatedEntity>> = flow {
+        while (true){
+            emit(myDao.getAllTopRatedData())
+            delay(20000)
+        }
+    }.flowOn(Dispatchers.IO)
+
     //Upcoming
     override val upcoming: Flow<List<UpcomingEntity>> = flow {
         while (true){
@@ -67,6 +92,13 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
         }
     }.flowOn(Dispatchers.IO)
 
+    override val upcomingByDb: Flow<List<UpcomingEntity>> = flow {
+        while (true){
+            emit(myDao.getAllUpcomingData())
+            delay(20000)
+        }
+    }.flowOn(Dispatchers.IO)
+
     //Trend
     override val trend: Flow<List<TrendEntity>> = flow {
         while (true){
@@ -75,6 +107,13 @@ class HomeRepositoryImpl @Inject constructor(private val apiService: ApiService,
             myDao.insertTrendData(getAllTrend(response))
             myDao.insertAllData(getAllData(response))
             delay(24000)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override val trendByDb: Flow<List<TrendEntity>> = flow {
+        while (true){
+            emit(myDao.getAllTrendData())
+            delay(20000)
         }
     }.flowOn(Dispatchers.IO)
 

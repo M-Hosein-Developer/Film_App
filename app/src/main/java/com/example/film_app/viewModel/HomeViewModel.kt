@@ -1,6 +1,7 @@
 package com.example.film_app.viewModel
 
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.film_app.model.repository.homeRepo.HomeRepository
@@ -11,6 +12,7 @@ import com.example.film_app.ui.state.homeState.TopRateState
 import com.example.film_app.ui.state.homeState.TrendState
 import com.example.film_app.ui.state.homeState.UpcomingState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +22,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(private val repository: HomeRepository, @ApplicationContext val context : Context,) : ViewModel() {
 
     val dataIntent = Channel<HomeIntent>()
 
@@ -74,7 +76,6 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository) 
 
     //Now Playing
     private fun getNowPlayingData() {
-
         _nowPlayingState.value = NowPlayingState.Loading
         viewModelScope.launch {
             repository.nowPlaying.catch {
