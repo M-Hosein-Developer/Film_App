@@ -37,11 +37,8 @@ class HomeRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-    override val nowPlayingByDb: Flow<List<NowPlayingEntity>> = flow<List<NowPlayingEntity>> {
-        while (true){
-            emit(myDao.getAllNowPlayingData())
-            delay(20000)
-        }
+    override val nowPlayingByDb: Flow<List<NowPlayingEntity>> = flow {
+        emit(myDao.getAllNowPlayingData())
     }.flowOn(Dispatchers.IO)
 
 
@@ -57,10 +54,7 @@ class HomeRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override val popularByDb: Flow<List<PopularEntity>> = flow {
-        while (true){
-            emit(myDao.getAllPopularData())
-            delay(20000)
-        }
+        emit(myDao.getAllPopularData())
     }.flowOn(Dispatchers.IO)
 
     //Top Rate
@@ -75,10 +69,7 @@ class HomeRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override val topRateByDb: Flow<List<TopRatedEntity>> = flow {
-        while (true){
-            emit(myDao.getAllTopRatedData())
-            delay(20000)
-        }
+        emit(myDao.getAllTopRatedData())
     }.flowOn(Dispatchers.IO)
 
     //Upcoming
@@ -93,10 +84,7 @@ class HomeRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override val upcomingByDb: Flow<List<UpcomingEntity>> = flow {
-        while (true){
-            emit(myDao.getAllUpcomingData())
-            delay(20000)
-        }
+        emit(myDao.getAllUpcomingData())
     }.flowOn(Dispatchers.IO)
 
     //Trend
@@ -111,10 +99,7 @@ class HomeRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override val trendByDb: Flow<List<TrendEntity>> = flow {
-        while (true){
-            emit(myDao.getAllTrendData())
-            delay(20000)
-        }
+        emit(myDao.getAllTrendData())
     }.flowOn(Dispatchers.IO)
 
 
